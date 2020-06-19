@@ -13,6 +13,7 @@
 
             <p><strong>Biomes:</strong> {{ $biomeCount }}</p>
             <p><strong>Charges:</strong> {{ $chargeCount }}</p>
+            <p><strong>Domains:</strong> {{ $domainCount }}</p>
             <p><strong>Minerals:</strong> {{ $mineralCount }}</p>
             <p><strong>Patterns:</strong> {{ $patternCount }}</p>
             <p><strong>Professions:</strong> {{ $professionCount }}</p>

@@ -17,6 +17,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::resource('biome', 'BiomeController');
 Route::resource('charge', 'ChargeController');
+Route::resource('domain', 'DomainController');
 Route::resource('mineral', 'MineralController');
 Route::resource('pattern', 'PatternController');
 Route::resource('profession', 'ProfessionController');
