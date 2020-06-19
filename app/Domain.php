@@ -13,4 +13,10 @@ class Domain extends Model
         'holy_items',
         'holy_symbols',
     ];
+
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 }

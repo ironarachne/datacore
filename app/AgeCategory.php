@@ -22,6 +22,13 @@ class AgeCategory extends Model
         'commonality',
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+        'species_id',
+    ];
+
     public function species() {
         return $this->belongsTo('App\Species');
     }

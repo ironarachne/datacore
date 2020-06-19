@@ -335,4 +335,11 @@ class SpeciesController extends Controller
 
         update_tags($traitTemplate, $input['tags']);
     }
+
+    public function getJSON()
+    {
+        $species = Species::with(['tags', 'traitTemplates', 'resources', 'ageCategories'])->get()->toJSON();
+
+        return response($species)->header('Content-Type', 'application/json');
+    }
 }

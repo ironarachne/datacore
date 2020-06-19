@@ -110,4 +110,11 @@ class ProfessionController extends Controller
 
         update_tags($profession, $request->tags);
     }
+
+    public function getJSON()
+    {
+        $professions = Profession::with('tags')->get()->toJSON();
+
+        return response($professions)->header('Content-Type', 'application/json');
+    }
 }

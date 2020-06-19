@@ -13,6 +13,13 @@ class TraitTemplate extends Model
         'trait_type',
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+        'species_id',
+    ];
+
     public function species()
     {
         return $this->belongsTo('App\Species');

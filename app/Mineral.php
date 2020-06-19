@@ -14,6 +14,12 @@ class Mineral extends Model
         'commonality',
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function resources() {
         return $this->morphToMany('App\Resource', 'resourceable');
     }

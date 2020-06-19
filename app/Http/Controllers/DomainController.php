@@ -109,4 +109,11 @@ class DomainController extends Controller
 
         $domain->save();
     }
+
+    public function getJSON()
+    {
+        $domains = Domain::all()->toJSON();
+
+        return response($domains)->header('Content-Type', 'application/json');
+    }
 }

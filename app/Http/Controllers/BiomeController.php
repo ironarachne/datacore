@@ -122,4 +122,11 @@ class BiomeController extends Controller
 
         $biome->save();
     }
+
+    public function getJSON()
+    {
+        $biomes = Biome::with('tags')->get()->toJSON();
+
+        return response($biomes)->header('Content-Type', 'application/json');
+    }
 }

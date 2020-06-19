@@ -139,4 +139,11 @@ class ResourceController extends Controller
 
         update_tags($resource, $input['tags']);
     }
+
+    public function getJSON()
+    {
+        $resources = Resource::with('tags')->get()->toJSON();
+
+        return response($resources)->header('Content-Type', 'application/json');
+    }
 }

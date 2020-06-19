@@ -143,4 +143,11 @@ class MineralController extends Controller
 
         return redirect()->route('mineral.show', ['mineral' => $mineral]);
     }
+
+    public function getJSON()
+    {
+        $minerals = Mineral::with('tags')->get()->toJSON();
+
+        return response($minerals)->header('Content-Type', 'application/json');
+    }
 }

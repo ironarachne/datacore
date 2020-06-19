@@ -11,6 +11,12 @@ class Profession extends Model
         'description',
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function patterns()
     {
         return $this->hasMany('App\Pattern');

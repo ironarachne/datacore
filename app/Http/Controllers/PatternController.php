@@ -162,4 +162,11 @@ class PatternController extends Controller
 
         $slot->save();
     }
+
+    public function getJSON()
+    {
+        $patterns = Pattern::with(['tags', 'slots'])->get()->toJSON();
+
+        return response($patterns)->header('Content-Type', 'application/json');
+    }
 }

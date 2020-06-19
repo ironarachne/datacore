@@ -15,6 +15,12 @@ class Charge extends Model
         'single_only',
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function tags()
     {
         return $this->morphToMany('App\Tag', 'taggable');

@@ -12,8 +12,9 @@
                     </div>
                 @endif
 
-                <form id="species-creation-form" method="POST"
-                      action="{{ route('species.store', ['species' => $species]) }}">
+                <form id="species-edit-form" method="POST"
+                      action="{{ route('species.update', ['species' => $species]) }}">
+                    @method('PUT')
                     @csrf
                     <div class="form-group">
                         <label for="name">Name</label>

@@ -16,6 +16,13 @@ class Resource extends Model
         'value',
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+        'pivot',
+    ];
+
     public static function withTag($tag)
     {
         $resources = Resource::whereHas('tags', function (Builder $query) use ($tag) {

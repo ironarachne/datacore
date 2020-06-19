@@ -13,6 +13,13 @@ class PatternSlot extends Model
         'possible_quirks',
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+        'pattern_id',
+    ];
+
     public function pattern() {
         return $this->belongsTo('App\Pattern');
     }

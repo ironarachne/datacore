@@ -14,8 +14,8 @@ const app = new Vue({
             console.log('Trying to create quick species ' + speciesName)
             axios.post('/quick/race', {name: speciesName})
                 .then(function(response){
-                    console.log(response);
-                    app.quickSpecies = '';
+                    console.log(response)
+                    app.quickSpecies = ''
                     app.message = 'Created new race: ' + response.data.name
                 })
         }

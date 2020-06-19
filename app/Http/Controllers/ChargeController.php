@@ -113,4 +113,11 @@ class ChargeController extends Controller
 
         update_tags($charge, $request->tags);
     }
+
+    public function getJSON()
+    {
+        $charges = Charge::with('tags')->get()->toJSON();
+
+        return response($charges);
+    }
 }

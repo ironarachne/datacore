@@ -17,6 +17,13 @@ class Pattern extends Model
         'value',
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+        'pivot',
+    ];
+
     public function professions()
     {
         return $this->belongsToMany('App\Profession');
