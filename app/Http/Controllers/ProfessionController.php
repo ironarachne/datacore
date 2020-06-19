@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Profession;
-use App\Tag;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -104,15 +103,11 @@ class ProfessionController extends Controller
 
     function save(Profession $profession, Request $request)
     {
-        $input = $request->all();
-
-        $profession->name = $input['name'];
-        $profession->description = $input['description'];
+        $profession->name = $request->name;
+        $profession->description = $request->description;
 
         $profession->save();
 
-        update_tags($profession, $input['tags']);
-
-        $profession->save();
+        update_tags($profession, $request->tags);
     }
 }

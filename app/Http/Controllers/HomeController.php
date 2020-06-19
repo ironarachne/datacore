@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Biome;
+use App\Charge;
 use App\Mineral;
 use App\Pattern;
 use App\Profession;
@@ -30,6 +31,7 @@ class HomeController extends Controller
     public function index()
     {
         $biomeCount = Biome::count();
+        $chargeCount = Charge::count();
         $mineralCount = Mineral::count();
         $patternCount = Pattern::count();
         $professionCount = Profession::count();
@@ -38,6 +40,7 @@ class HomeController extends Controller
 
         return view('home', [
             'biomeCount' => $biomeCount,
+            'chargeCount' => $chargeCount,
             'mineralCount' => $mineralCount,
             'patternCount' => $patternCount,
             'professionCount' => $professionCount,
