@@ -16,7 +16,7 @@ FROM node:12.14 as frontend
 
 RUN mkdir -p /app/public
 
-COPY package.json webpack.mix.js package-lock.json /app/
+COPY package.json webpack.mix.js package-lock.json resources /app/
 
 WORKDIR /app
 
