@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Biome;
 use App\Tag;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BiomeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {
@@ -23,7 +26,7 @@ class BiomeController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function create()
     {
@@ -33,9 +36,9 @@ class BiomeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -49,9 +52,9 @@ class BiomeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Biome $biome
+     * @param Biome $biome
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function show(Biome $biome)
     {
@@ -61,21 +64,13 @@ class BiomeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Biome $biome
+     * @param Biome $biome
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function edit(Biome $biome)
     {
-        $tags = '';
-        $tagData = $biome->tags()->get();
-
-        foreach ($tagData as $tag) {
-            $tags .= $tag->name . ',';
-        }
-        if (substr($tags, -1, 1) == ','){
-            $tags = substr($tags, 0, -1);
-        }
+        $tags = convert_tags_to_string($biome);
 
         return view('biome.edit', ['biome' => $biome, 'tags' => $tags]);
     }
@@ -83,10 +78,10 @@ class BiomeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Biome $biome
+     * @param Request $request
+     * @param Biome $biome
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Biome $biome)
     {
@@ -98,9 +93,9 @@ class BiomeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Biome $biome
+     * @param Biome $biome
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Biome $biome)
     {
@@ -123,18 +118,7 @@ class BiomeController extends Controller
         $biome->type = $input['type'];
         $biome->save();
 
-        $tags = explode(',', $input['tags']);
-        $tagIDs = [];
-        foreach ($tags as $tag) {
-            $t = Tag::where('name', '=', $tag)->first();
-            if (empty($t)) {
-                $newTag = Tag::create(['name' => $tag]);
-                $newTag->save();
-                $t = $newTag;
-            }
-            $tagIDs[] = $t->id;
-        }
-        $biome->tags()->sync($tagIDs);
+        update_tags($biome, $input['tags']);
 
         $biome->save();
     }

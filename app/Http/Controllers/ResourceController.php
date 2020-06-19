@@ -2,28 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Mineral;
 use App\Resource;
 use App\Tag;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ResourceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $resources = Resource::all();
+        $tag = $request->tag;
 
-        return view('resource.index', ['resources' => $resources]);
+        if (!empty($tag)) {
+            $resources = Resource::withTag($tag);
+        } else {
+            $resources = Resource::all();
+        }
+
+        return view('resource.index', ['resources' => $resources, 'tag' => $tag]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function create()
     {
@@ -33,9 +43,9 @@ class ResourceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -49,9 +59,9 @@ class ResourceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Resource $resource
+     * @param Resource $resource
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function show(Resource $resource)
     {
@@ -61,9 +71,9 @@ class ResourceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Resource $resource
+     * @param Resource $resource
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function edit(Resource $resource)
     {
@@ -73,10 +83,10 @@ class ResourceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Resource $resource
+     * @param Request $request
+     * @param Resource $resource
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Resource $resource)
     {
@@ -88,9 +98,9 @@ class ResourceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Resource $resource
+     * @param Resource $resource
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Resource $resource)
     {
@@ -108,19 +118,25 @@ class ResourceController extends Controller
         $resource->value = $input['value'];
         $resource->save();
 
-        $tags = explode(',', $input['tags']);
-        $tagIDs = [];
-        foreach ($tags as $tag) {
-            $t = Tag::where('name', '=', $tag)->first();
-            if (empty($t)) {
-                $newTag = Tag::create(['name' => $tag]);
-                $newTag->save();
-                $t = $newTag;
-            }
-            $tagIDs[] = $t->id;
-        }
-        $resource->tags()->sync($tagIDs);
+        update_tags($resource, $input['tags']);
 
         $resource->save();
+    }
+
+    public function saveFor($item, Resource $resource, Request $request) {
+        $input = $request->all();
+
+        $resource->name = $input['name'];
+        $resource->description = $input['description'];
+        $resource->main_material = $input['main_material'];
+        $resource->origin = $item->name;
+        $resource->commonality = $input['commonality'];
+        $resource->value = $input['value'];
+
+        $resource->save();
+
+        $item->resources()->syncWithoutDetaching($resource->id);
+
+        update_tags($resource, $input['tags']);
     }
 }

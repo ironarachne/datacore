@@ -34,8 +34,11 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li><a href="{{ url('/biome') }}" class="nav-link">Biomes</a></li>
+                        <li><a href="{{ url('/mineral') }}" class="nav-link">Minerals</a></li>
+                        <li><a href="{{ url('/pattern') }}" class="nav-link">Patterns</a></li>
                         <li><a href="{{ url('/profession') }}" class="nav-link">Professions</a></li>
                         <li><a href="{{ url('/resource') }}" class="nav-link">Resources</a></li>
+                        <li><a href="{{ url('/species') }}" class="nav-link">Species</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

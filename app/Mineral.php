@@ -4,16 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profession extends Model
+class Mineral extends Model
 {
     protected $fillable = [
         'name',
-        'description',
+        'plural_name',
+        'hardness',
+        'malleability',
+        'commonality',
     ];
 
-    public function patterns()
-    {
-        return $this->hasMany('App\Pattern');
+    public function resources() {
+        return $this->morphToMany('App\Resource', 'resourceable');
     }
 
     public function tags()

@@ -12,8 +12,11 @@
             @endif
 
             <p><strong>Biomes:</strong> {{ $biomeCount }}</p>
+            <p><strong>Minerals:</strong> {{ $mineralCount }}</p>
+            <p><strong>Patterns:</strong> {{ $patternCount }}</p>
             <p><strong>Professions:</strong> {{ $professionCount }}</p>
             <p><strong>Resources:</strong> {{ $resourceCount }}</p>
+            <p><strong>Species:</strong> {{ $speciesCount }}</p>
         </div>
     </div>
 </div>

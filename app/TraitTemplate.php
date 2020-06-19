@@ -4,16 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profession extends Model
+class TraitTemplate extends Model
 {
     protected $fillable = [
         'name',
-        'description',
+        'possible_values',
+        'possible_descriptors',
+        'trait_type',
     ];
 
-    public function patterns()
+    public function species()
     {
-        return $this->hasMany('App\Pattern');
+        return $this->belongsTo('App\Species');
     }
 
     public function tags()

@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Profession;
 use App\Tag;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProfessionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {
@@ -23,7 +26,7 @@ class ProfessionController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function create()
     {
@@ -33,9 +36,9 @@ class ProfessionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -49,9 +52,9 @@ class ProfessionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Profession $profession
+     * @param Profession $profession
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function show(Profession $profession)
     {
@@ -61,21 +64,13 @@ class ProfessionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Profession $profession
+     * @param Profession $profession
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function edit(Profession $profession)
     {
-        $tags = '';
-        $tagData = $profession->tags()->get();
-
-        foreach ($tagData as $tag) {
-            $tags .= $tag->name.',';
-        }
-        if (substr($tags, -1, 1) == ',') {
-            $tags = substr($tags, 0, -1);
-        }
+        $tags = convert_tags_to_string($profession);
 
         return view('profession.edit', ['profession' => $profession, 'tags' => $tags]);
     }
@@ -83,10 +78,10 @@ class ProfessionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Profession $profession
+     * @param Request $request
+     * @param Profession $profession
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Profession $profession)
     {
@@ -98,9 +93,9 @@ class ProfessionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Profession $profession
+     * @param Profession $profession
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Profession $profession)
     {
@@ -116,18 +111,7 @@ class ProfessionController extends Controller
 
         $profession->save();
 
-        $tags = explode(',', $input['tags']);
-        $tagIDs = [];
-        foreach ($tags as $tag) {
-            $t = Tag::where('name', '=', $tag)->first();
-            if (empty($t)) {
-                $newTag = Tag::create(['name' => $tag]);
-                $newTag->save();
-                $t = $newTag;
-            }
-            $tagIDs[] = $t->id;
-        }
-        $profession->tags()->sync($tagIDs);
+        update_tags($profession, $input['tags']);
 
         $profession->save();
     }
