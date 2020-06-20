@@ -1,4 +1,4 @@
-FROM composer:1.8 as vendor
+FROM composer:1.10 as vendor
 
 COPY database/ database/
 
@@ -12,11 +12,12 @@ RUN composer install \
     --no-scripts \
     --prefer-dist
 
-FROM node:12.14 as frontend
+FROM node:14.4 as frontend
 
 RUN mkdir -p /app/public
 
-COPY package.json webpack.mix.js package-lock.json resources /app/
+COPY package.json webpack.mix.js package-lock.json /app/
+COPY resources/ /app/resources/
 
 WORKDIR /app
 
