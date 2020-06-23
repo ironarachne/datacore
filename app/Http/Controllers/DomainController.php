@@ -114,6 +114,8 @@ class DomainController extends Controller
     {
         $domains = Domain::all()->toJSON();
 
+        $domains = '{"domains":' . $domains . '}';
+
         return response($domains)->header('Content-Type', 'application/json');
     }
 }

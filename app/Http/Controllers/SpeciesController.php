@@ -340,6 +340,8 @@ class SpeciesController extends Controller
     {
         $species = Species::with(['tags', 'traitTemplates', 'resources', 'ageCategories'])->get()->toJSON();
 
+        $species = '{"species":' . $species . '}';
+
         return response($species)->header('Content-Type', 'application/json');
     }
 }

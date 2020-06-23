@@ -12,7 +12,7 @@
                     </div>
                 @endif
 
-                <form id="resource-creation-form" method="POST"
+                <form id="resource-edit-form" method="POST"
                       action="{{ route($itemType . '.update_resource', [$itemType => $item, 'resource' => $resource]) }}">
                     @method('PUT')
                     @csrf

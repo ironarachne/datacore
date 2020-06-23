@@ -12,8 +12,9 @@
                     </div>
                 @endif
 
-                <form id="resource-creation-form" method="POST"
-                      action="{{ route('species.store_trait_template', ['species' => $species, 'trait_template' => $traitTemplate]) }}">
+                <form id="trait-template-edit-form" method="POST"
+                      action="{{ route('species.update_trait_template', ['species' => $species, 'trait_template' => $traitTemplate]) }}">
+                    @method('PUT')
                     @csrf
                     <div class="form-group">
                         <label for="name">Name</label>

@@ -12,7 +12,7 @@
                     </div>
                 @endif
 
-                <form id="resource-creation-form" method="POST" action="{{ route('resource.update') }}">
+                <form id="resource-edit-form" method="POST" action="{{ route('resource.update') }}">
                     @method('PUT')
                     @csrf
                     <div class="form-group">

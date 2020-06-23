@@ -14,6 +14,7 @@ class CreateResourceablesTable extends Migration
     public function up()
     {
         Schema::create('resourceables', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('resource_id');
             $table->unsignedBigInteger('resourceable_id');
             $table->string('resourceable_type');

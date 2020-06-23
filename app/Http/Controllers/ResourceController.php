@@ -144,6 +144,8 @@ class ResourceController extends Controller
     {
         $resources = Resource::with('tags')->get()->toJSON();
 
+        $resources = '{"resources":' . $resources . '}';
+
         return response($resources)->header('Content-Type', 'application/json');
     }
 }

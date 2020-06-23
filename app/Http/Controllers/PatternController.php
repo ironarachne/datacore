@@ -167,6 +167,8 @@ class PatternController extends Controller
     {
         $patterns = Pattern::with(['tags', 'slots'])->get()->toJSON();
 
+        $patterns = '{"patterns":' . $patterns . '}';
+
         return response($patterns)->header('Content-Type', 'application/json');
     }
 }
