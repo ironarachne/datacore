@@ -2,6 +2,10 @@
 
 namespace App;
 
+use App\AgeCategory;
+use App\Resource;
+use App\Tag;
+use App\TraitTemplate;
 use Illuminate\Database\Eloquent\Model;
 
 class Species extends Model
@@ -75,7 +79,7 @@ class Species extends Model
         
         if (sizeof($object['possible_traits']) > 0) {
             foreach($object['possible_traits'] as $t) {
-                $trait = new Trait;
+                $trait = new TraitTemplate;
                 $tTags = [];
                 $trait->name = $t['name'];
                 $trait->possible_values = implode(',', $t['possible_values']);
@@ -89,7 +93,7 @@ class Species extends Model
         
         if (sizeof($object['common_traits']) > 0) {
             foreach($object['common_traits'] as $t) {
-                $trait = new Trait;
+                $trait = new TraitTemplate;
                 $tTags = [];
                 $trait->name = $t['name'];
                 $trait->possible_values = implode(',', $t['possible_values']);
