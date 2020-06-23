@@ -11,7 +11,7 @@
                     </div>
                 @endif
 
-                <form id="biome-creation-form" method="POST" action="{{ route('biome.update', ['biome'=>$biome]) }}">
+                <form id="biome-edit-form" method="POST" action="{{ route('biome.update', ['biome'=>$biome]) }}">
                     @method('PUT')
                     @csrf
                     <div class="form-group">

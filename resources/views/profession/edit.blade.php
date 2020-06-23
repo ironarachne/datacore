@@ -12,7 +12,7 @@
                     </div>
                 @endif
 
-                <form id="profession-creation-form" method="POST"
+                <form id="profession-edit-form" method="POST"
                       action="{{ route('profession.update', ['profession'=>$profession]) }}">
                     @method('PUT')
                     @csrf

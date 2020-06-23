@@ -12,7 +12,7 @@
                     </div>
                 @endif
 
-                <form id="resource-creation-form" method="POST"
+                <form id="age-category-edit-form" method="POST"
                       action="{{ route('species.update_age_category', ['species' => $species, 'age_category' => $ageCategory]) }}">
                     @method('PUT')
                     @csrf

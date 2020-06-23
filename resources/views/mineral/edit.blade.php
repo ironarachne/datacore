@@ -12,7 +12,7 @@
                     </div>
                 @endif
 
-                <form id="mineral-creation-form" method="POST" action="{{ route('mineral.store') }}">
+                <form id="mineral-edit-form" method="POST" action="{{ route('mineral.update') }}">
                     @method('PUT')
                     @csrf
                     <div class="form-group">

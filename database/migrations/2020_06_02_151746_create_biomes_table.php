@@ -18,8 +18,8 @@ class CreateBiomesTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->integer('fauna_prevalence', false, true);
-            $table->integer('altitude_max', false, true);
-            $table->integer('altitude_min', false, true);
+            $table->integer('altitude_max', false, false);
+            $table->integer('altitude_min', false, false);
             $table->integer('temperature_max', false, true);
             $table->integer('temperature_min', false, true);
             $table->integer('precipitation_max', false, true);

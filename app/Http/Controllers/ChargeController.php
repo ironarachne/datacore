@@ -108,6 +108,7 @@ class ChargeController extends Controller
         $charge->noun = $request->noun;
         $charge->noun_plural = $request->noun_plural;
         $charge->single_only = $request->has('single_only');
+        $charge->descriptor = $request->descriptor;
 
         $charge->save();
 

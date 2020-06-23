@@ -14,6 +14,7 @@ class CreatePatternProfessionTable extends Migration
     public function up()
     {
         Schema::create('pattern_profession', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('pattern_id');
             $table->unsignedBigInteger('profession_id');
         });
