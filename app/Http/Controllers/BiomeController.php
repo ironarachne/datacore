@@ -127,6 +127,8 @@ class BiomeController extends Controller
     {
         $biomes = Biome::with('tags')->get()->toJSON();
 
+        $biomes = '{"biomes":' . $biomes. '}';
+
         return response($biomes)->header('Content-Type', 'application/json');
     }
 }

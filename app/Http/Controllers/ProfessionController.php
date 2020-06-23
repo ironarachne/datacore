@@ -115,6 +115,8 @@ class ProfessionController extends Controller
     {
         $professions = Profession::with('tags')->get()->toJSON();
 
+        $professions = '{"professions":' . $professions . '}';
+
         return response($professions)->header('Content-Type', 'application/json');
     }
 }

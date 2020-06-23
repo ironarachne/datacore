@@ -148,6 +148,8 @@ class MineralController extends Controller
     {
         $minerals = Mineral::with('tags')->get()->toJSON();
 
+        $minerals = '{"minerals":' . $minerals . '}';
+
         return response($minerals)->header('Content-Type', 'application/json');
     }
 }

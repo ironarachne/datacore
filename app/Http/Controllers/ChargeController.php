@@ -119,6 +119,8 @@ class ChargeController extends Controller
     {
         $charges = Charge::with('tags')->get()->toJSON();
 
+        $charges = '{"charges":' . $charges . '}';
+
         return response($charges);
     }
 }
