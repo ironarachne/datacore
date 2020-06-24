@@ -26,3 +26,4 @@ Route::get('/patterns', 'PatternController@getJSON');
 Route::get('/professions', 'ProfessionController@getJSON');
 Route::get('/resources', 'ResourceController@getJSON');
 Route::get('/species', 'SpeciesController@getJSON');
+Route::post('/species', 'SpeciesController@storeFromJson')->middleware('auth:api');

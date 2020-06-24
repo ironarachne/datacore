@@ -36,4 +36,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function generateApiToken() {
+        $random = rand();
+        $token = sha256($random);
+
+        $this->api_token = $token;
+        $this->save();
+
+        return $this;
+    }
 }
