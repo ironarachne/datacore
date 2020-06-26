@@ -31,7 +31,7 @@
                         <tr>
                             <td>{{ $slot->name }}</td>
                             <td><a href="{{ route('resource.index') }}?tag={{ $slot->required_tag }}">{{ $slot->required_tag }}</td>
-                            <td>{{ $slot->description_template }}</td>
+                            <td v-pre>{{ $slot->description_template }}</td>
                             <td>{{ $slot->possible_quirks }}</td>
                         </tr>
                     @endforeach

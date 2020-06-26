@@ -39,7 +39,7 @@ class User extends Authenticatable
 
     public function generateApiToken() {
         $random = rand();
-        $token = sha256($random);
+        $token = hash('sha256', $random);
 
         $this->api_token = $token;
         $this->save();

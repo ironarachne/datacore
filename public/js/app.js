@@ -49490,10 +49490,42 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 var app = new Vue({
   el: '#app',
   data: {
+    apiToken: '',
+    chargeJson: '',
     message: '',
+    patternJson: '',
+    speciesJson: '',
     quickSpecies: ''
   },
   methods: {
+    createChargesFromJson: function createChargesFromJson() {
+      chargeJson = this.chargeJson;
+      this.chargeJson = '';
+      axios.post('/api/charges', {
+        data: chargeJson
+      }, {
+        headers: {
+          'Authorization': 'Bearer ' + this.apiToken
+        }
+      }).then(function (response) {
+        console.log(response);
+        app.message = 'Created ' + response.data.new_records_count + ' new charges from data';
+      });
+    },
+    createPatternsFromJson: function createPatternsFromJson() {
+      patternJson = this.patternJson;
+      this.patternJson = '';
+      axios.post('/api/patterns', {
+        data: patternJson
+      }, {
+        headers: {
+          'Authorization': 'Bearer ' + this.apiToken
+        }
+      }).then(function (response) {
+        console.log(response);
+        app.message = 'Created ' + response.data.new_records_count + ' new patterns from data';
+      });
+    },
     createQuickRace: function createQuickRace() {
       speciesName = this.quickSpecies;
       console.log('Trying to create quick species ' + speciesName);
@@ -49504,7 +49536,24 @@ var app = new Vue({
         app.quickSpecies = '';
         app.message = 'Created new race: ' + response.data.name;
       });
+    },
+    createSpeciesFromJson: function createSpeciesFromJson() {
+      speciesJson = this.speciesJson;
+      this.speciesJson = '';
+      axios.post('/api/species', {
+        data: speciesJson
+      }, {
+        headers: {
+          'Authorization': 'Bearer ' + this.apiToken
+        }
+      }).then(function (response) {
+        console.log(response);
+        app.message = 'Created ' + response.data.new_records_count + ' new species from data';
+      });
     }
+  },
+  mounted: function mounted() {
+    this.apiToken = this.$refs.apiToken.value;
   }
 });
 

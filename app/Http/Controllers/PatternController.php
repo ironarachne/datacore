@@ -171,4 +171,65 @@ class PatternController extends Controller
 
         return response($patterns)->header('Content-Type', 'application/json');
     }
+
+    public function storeFromJson(Request $request)
+    {
+        $missingProfessions = [];
+
+        $data = json_decode($request->data);
+
+        if (empty($data->patterns)) {
+            return response('invalid data for patterns', '400');
+        }
+
+        $newRecordsCount = 0;
+
+        foreach($data->patterns as $object) {
+            $pattern = new Pattern;
+
+            $pattern->name = $object->name;
+            $pattern->description = $object->description;
+            $pattern->commonality = $object->commonality;
+            $pattern->name_template = $object->name_template;
+            $pattern->main_material_override = $object->main_material_override;
+            $pattern->origin_override = $object->origin_override;
+            $pattern->value = $object->value;
+
+            $pattern->save();
+
+            $profession = Profession::where('name', '=', $object->profession_name)->first();
+            if (!empty($profession)) {
+                $pattern->professions()->save($profession);
+            } else {
+                if (!in_array($object->profession_name, $missingProfessions)) {
+                    $missingProfessions[] = $object->profession_name;
+                }
+            }
+
+            if (!empty($object->slots)) {
+                foreach($object->slots as $slot) {
+                    $s = new PatternSlot;
+                    $s->name = $slot->name;
+                    $s->required_tag = $slot->required_tag;
+                    $s->description_template = $slot->description_template;
+                    $s->possible_quirks = $slot->possible_quirks;
+
+                    $pattern->slots()->save($s);
+                }
+            }
+
+            if (sizeof($object->tags) > 0) {
+                $tags = implode(',', $object->tags);
+                update_tags($pattern, $tags);
+            }
+
+            $newRecordsCount++;
+        }
+
+        return response()->json([
+            'state' => 'success',
+            'new_records_count' => $newRecordsCount,
+            'missing_professions' => $missingProfessions,
+        ]);
+    }
 }
