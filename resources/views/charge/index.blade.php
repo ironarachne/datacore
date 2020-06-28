@@ -18,13 +18,14 @@
                         <p>@{{ message }}</p>
 
                         <h2 class="card-title">Process JSON Data</h2>
-                        <p>The JSON must have a parent entity "charge" that contains an array of properly-formatted charge.</p>
+                        <p>The JSON must have a parent entity "charges" that contains an array of properly-formatted charge.</p>
+                        <input type="hidden" ref="jsonType" value="charges">
                         <div class="form-group">
-                            <label for="charge-json">JSON</label>
-                            <textarea class="form-control" id="charge-json" rows="12" v-model="chargeJson"></textarea>
+                            <label for="json-data">JSON</label>
+                            <textarea class="form-control" id="json-data" rows="12" v-model="jsonData"></textarea>
                         </div>
                         <div class="btn-group">
-                            <button class="btn btn-danger" id="charge-from-json" v-on:click="createChargesFromJson" :disabled="!chargeJson">Process</button>
+                            <button class="btn btn-danger" id="create-from-json" v-on:click="createFromJson" :disabled="!jsonData">Process</button>
                         </div>
                     </div>
                 </div>

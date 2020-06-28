@@ -131,4 +131,44 @@ class BiomeController extends Controller
 
         return response($biomes)->header('Content-Type', 'application/json');
     }
+
+    public function storeFromJson(Request $request)
+    {
+        $data = json_decode($request->data);
+
+        if (empty($data->biomes)) {
+            return response('invalid data for biomes', '400');
+        }
+
+        $newRecordsCount = 0;
+
+        foreach($data->biomes as $object) {
+            $biome = new Biome;
+
+            $biome->name = $object->name;
+            $biome->altitude_max = $object->altitude_max;
+            $biome->altitude_min = $object->altitude_min;
+            $biome->temperature_max = $object->temperature_max;
+            $biome->temperature_min = $object->temperature_min;
+            $biome->precipitation_max = $object->precipitation_max;
+            $biome->precipitation_min = $object->precipitation_min;
+            $biome->fauna_prevalence = $object->fauna_prevalence;
+            $biome->vegetation_prevalence = $object->vegetation_prevalence;
+            $biome->type = $object->type;
+
+            $biome->save();
+
+            if (sizeof($object->fauna_tags) > 0) {
+                $tags = implode(',', $object->fauna_tags);
+                update_tags($biome, $tags);
+            }
+
+            $newRecordsCount++;
+        }
+
+        return response()->json([
+            'state' => 'success',
+            'new_records_count' => $newRecordsCount,
+        ]);
+    }
 }

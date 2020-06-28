@@ -118,4 +118,50 @@ class DomainController extends Controller
 
         return response($domains)->header('Content-Type', 'application/json');
     }
+
+    public function storeFromJson(Request $request)
+    {
+        $data = json_decode($request->data);
+
+        if (empty($data->domains)) {
+            return response('invalid data for domains', '400');
+        }
+
+        $newRecordsCount = 0;
+
+        foreach($data->domains as $object) {
+            $domain = new Domain;
+
+            $domain->name = $object->name;
+
+            if (sizeof($object->appearance_traits) > 0) {
+                $appearance_traits = implode(',', $object->appearance_traits);
+                $domain->appearance_traits = $appearance_traits;
+            }
+
+            if (sizeof($object->personality_traits) > 0) {
+                $personality_traits = implode(',', $object->personality_traits);
+                $domain->personality_traits = $personality_traits;
+            }
+
+            if (sizeof($object->holy_items) > 0) {
+                $holy_items = implode(',', $object->holy_items);
+                $domain->holy_items = $holy_items;
+            }
+
+            if (sizeof($object->holy_symbols) > 0) {
+                $holy_symbols = implode(',', $object->holy_symbols);
+                $domain->holy_symbols = $holy_symbols;
+            }
+
+            $domain->save();
+
+            $newRecordsCount++;
+        }
+
+        return response()->json([
+            'state' => 'success',
+            'new_records_count' => $newRecordsCount,
+        ]);
+    }
 }

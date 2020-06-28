@@ -27,12 +27,13 @@
 
                         <h2 class="card-title">Process JSON Data</h2>
                         <p>The JSON must have a parent entity "species" that contains an array of properly-formatted species.</p>
+                        <input type="hidden" ref="jsonType" value="species">
                         <div class="form-group">
-                            <label for="species-json">JSON</label>
-                            <textarea class="form-control" id="species-json" rows="12" v-model="speciesJson"></textarea>
+                            <label for="json-data">JSON</label>
+                            <textarea class="form-control" id="json-data" rows="12" v-model="jsonData"></textarea>
                         </div>
                         <div class="btn-group">
-                            <button class="btn btn-danger" id="species-from-json" v-on:click="createSpeciesFromJson" :disabled="!speciesJson">Process</button>
+                            <button class="btn btn-danger" id="create-from-json" v-on:click="createFromJson" :disabled="!jsonData">Process</button>
                         </div>
                     </div>
                 </div>

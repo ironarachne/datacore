@@ -6,31 +6,20 @@ const app = new Vue({
     el: '#app',
     data: {
         apiToken: '',
-        chargeJson: '',
+        jsonData: '',
+        jsonType: '',
         message: '',
-        patternJson: '',
-        speciesJson: '',
         quickSpecies: '',
     },
     methods: {
-        createChargesFromJson: function () {
-            chargeJson = this.chargeJson
-            this.chargeJson = ''
+        createFromJson: function () {
+            jsonData = this.jsonData
+            this.jsonData = ''
 
-            axios.post('/api/charges', {data: chargeJson}, {headers: {'Authorization': 'Bearer ' + this.apiToken}})
+            axios.post('/api/' + this.jsonType, {data: jsonData}, {headers: {'Authorization': 'Bearer ' + this.apiToken}})
                 .then(function(response){
                     console.log(response)
-                    app.message = 'Created ' + response.data.new_records_count + ' new charges from data'
-                })
-        },
-        createPatternsFromJson: function () {
-            patternJson = this.patternJson
-            this.patternJson = ''
-
-            axios.post('/api/patterns', {data: patternJson}, {headers: {'Authorization': 'Bearer ' + this.apiToken}})
-                .then(function(response){
-                    console.log(response)
-                    app.message = 'Created ' + response.data.new_records_count + ' new patterns from data'
+                    app.message = 'Created ' + response.data.new_records_count + ' new items from data'
                 })
         },
         createQuickRace: function () {
@@ -42,19 +31,10 @@ const app = new Vue({
                     app.quickSpecies = ''
                     app.message = 'Created new race: ' + response.data.name
                 })
-        },
-        createSpeciesFromJson: function () {
-            speciesJson = this.speciesJson
-            this.speciesJson = ''
-
-            axios.post('/api/species', {data: speciesJson}, {headers: {'Authorization': 'Bearer ' + this.apiToken}})
-                .then(function(response){
-                    console.log(response)
-                    app.message = 'Created ' + response.data.new_records_count + ' new species from data'
-                })
         }
     },
     mounted: function() {
         this.apiToken = this.$refs.apiToken.value
+        this.jsonType = this.$refs.jsonType.value
     }
 });

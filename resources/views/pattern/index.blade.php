@@ -19,12 +19,13 @@
 
                         <h2 class="card-title">Process JSON Data</h2>
                         <p>The JSON must have a parent entity "pattern" that contains an array of properly-formatted pattern.</p>
+                        <input type="hidden" ref="jsonType" value="patterns">
                         <div class="form-group">
-                            <label for="pattern-json">JSON</label>
-                            <textarea class="form-control" id="pattern-json" rows="12" v-model="patternJson"></textarea>
+                            <label for="json-data">JSON</label>
+                            <textarea class="form-control" id="json-data" rows="12" v-model="jsonData"></textarea>
                         </div>
                         <div class="btn-group">
-                            <button class="btn btn-danger" id="pattern-from-json" v-on:click="createPatternsFromJson" :disabled="!patternJson">Process</button>
+                            <button class="btn btn-danger" id="create-from-json" v-on:click="createFromJson" :disabled="!jsonData">Process</button>
                         </div>
                     </div>
                 </div>
