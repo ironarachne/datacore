@@ -17,7 +17,7 @@ class ProfessionController extends Controller
      */
     public function index()
     {
-        $professions = Profession::all();
+        $professions = Profession::orderBy('name')->get();
 
         return view('profession.index', ['professions' => $professions]);
     }

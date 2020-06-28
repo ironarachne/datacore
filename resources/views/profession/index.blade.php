@@ -31,13 +31,23 @@
                 </div>
 
                 <h2>List of Professions</h2>
-                <ul>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     @foreach ($professions as $profession)
-                        <li>
-                            <a href="{{ route('profession.show', ['profession' => $profession]) }}">{{ $profession->name }}</a>
-                        </li>
+                        <tr>
+                            <td><a href="{{ route('profession.show', ['profession' => $profession]) }}">{{ $profession->name }}</a></td>
+                            <td>{{ $profession->description }}</td>
+                        </tr>
                     @endforeach
-                </ul>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
