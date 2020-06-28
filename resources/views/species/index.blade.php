@@ -42,11 +42,22 @@
 
                 <h2>List of Species</h2>
 
-                <ul>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Tags</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     @foreach ($species as $spe)
-                        <li><a href="{{ route('species.show', ['species'=>$spe->id]) }}">{{ $spe->name }}</a></li>
+                        <tr>
+                            <td><a href="{{ route('species.show', ['species'=>$spe->id]) }}">{{ $spe->name }}</a></td>
+                            <td>{{ convert_tags_to_string($spe) }}</td>
+                        </tr>
                     @endforeach
-                </ul>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

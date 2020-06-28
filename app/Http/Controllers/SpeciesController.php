@@ -18,9 +18,9 @@ class SpeciesController extends Controller
      *
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $species = Species::all();
+        $species = Species::orderBy('name')->get();
 
         return view('species.index', ['species' => $species]);
     }
