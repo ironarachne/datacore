@@ -125,7 +125,7 @@ class BiomeController extends Controller
 
     public function getJSON(Request $request)
     {
-        if (!empty($request->query('tag'))) {
+        if (! empty($request->query('tag'))) {
             $tag = Tag::where('name', '=', $request->query('tag'))->first();
             if (empty($tag)) {
                 return response('{"biomes": []}')->header('Content-Type', 'application/json');
@@ -135,7 +135,7 @@ class BiomeController extends Controller
             $biomes = Biome::with('tags')->get()->toJson();
         }
 
-        $biomes = '{"biomes":' . $biomes. '}';
+        $biomes = '{"biomes":'.$biomes.'}';
 
         return response($biomes)->header('Content-Type', 'application/json');
     }
@@ -150,7 +150,7 @@ class BiomeController extends Controller
 
         $newRecordsCount = 0;
 
-        foreach($data->biomes as $object) {
+        foreach ($data->biomes as $object) {
             $biome = new Biome;
 
             $biome->name = $object->name;

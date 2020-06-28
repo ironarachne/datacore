@@ -353,9 +353,9 @@ class SpeciesController extends Controller
             if (empty($tag)) {
                 return response('{"species": []}')->header('Content-Type', 'application/json');
             }
-            $species = $tag->species()->with(['tags', 'traitTemplates', 'resources', 'ageCategories'])->get()->toJSON();
+            $species = $tag->species()->with(['tags', 'traitTemplates', 'resources', 'ageCategories', 'resources.tags'])->get()->toJSON();
         } else {
-            $species = Species::with(['tags', 'traitTemplates', 'resources', 'ageCategories'])->get()->toJSON();
+            $species = Species::with(['tags', 'traitTemplates', 'resources', 'ageCategories', 'resources.tags'])->get()->toJSON();
         }
 
         $species = '{"species":' . $species . '}';

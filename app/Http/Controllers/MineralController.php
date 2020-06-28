@@ -79,8 +79,8 @@ class MineralController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request  $request
-     * @param Mineral  $mineral
+     * @param Request $request
+     * @param Mineral $mineral
      *
      * @return RedirectResponse
      */
@@ -94,7 +94,7 @@ class MineralController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Mineral  $mineral
+     * @param Mineral $mineral
      *
      * @return Response
      */
@@ -103,7 +103,8 @@ class MineralController extends Controller
         //
     }
 
-    public function save(Mineral $mineral, Request $request) {
+    public function save(Mineral $mineral, Request $request)
+    {
         $input = $request->all();
 
         $mineral->name = $input['name'];
@@ -119,24 +120,28 @@ class MineralController extends Controller
 
     // Resource functions
 
-    public function createResource(Mineral $mineral) {
+    public function createResource(Mineral $mineral)
+    {
         return view('resource.create-for', ['item' => $mineral, 'itemType' => 'mineral']);
     }
 
-    public function editResource(Mineral $mineral, Resource $resource) {
+    public function editResource(Mineral $mineral, Resource $resource)
+    {
         $tags = convert_tags_to_string($resource);
 
         return view('resource.edit-for', ['item' => $mineral, 'itemType' => 'mineral', 'resource' => $resource, 'tags' => $tags]);
     }
 
-    public function updateResource(Mineral $mineral, Resource $resource, Request $request) {
+    public function updateResource(Mineral $mineral, Resource $resource, Request $request)
+    {
         $rc = new ResourceController();
         $rc->saveFor($mineral, $resource, $request);
 
         return redirect()->route('mineral.show', ['mineral' => $mineral]);
     }
 
-    public function storeResource(Mineral $mineral, Request $request) {
+    public function storeResource(Mineral $mineral, Request $request)
+    {
         $resource = new Resource;
 
         $rc = new ResourceController();
@@ -147,17 +152,17 @@ class MineralController extends Controller
 
     public function getJSON(Request $request)
     {
-        if (!empty($request->query('tag'))) {
+        if (! empty($request->query('tag'))) {
             $tag = Tag::where('name', '=', $request->query('tag'))->first();
             if (empty($tag)) {
                 return response('{"minerals": []}')->header('Content-Type', 'application/json');
             }
-            $minerals = $tag->minerals()->with('tags')->get()->toJson();
+            $minerals = $tag->minerals()->with(['tags', 'resources.tags'])->get()->toJson();
         } else {
-            $minerals = Mineral::with('tags')->get()->toJSON();
+            $minerals = Mineral::with(['tags', 'resources.tags'])->get()->toJSON();
         }
 
-        $minerals = '{"minerals":' . $minerals . '}';
+        $minerals = '{"minerals":'.$minerals.'}';
 
         return response($minerals)->header('Content-Type', 'application/json');
     }
@@ -172,7 +177,7 @@ class MineralController extends Controller
 
         $newRecordsCount = 0;
 
-        foreach($data->minerals as $object) {
+        foreach ($data->minerals as $object) {
             $mineral = new Mineral;
 
             $mineral->name = $object->name;
@@ -183,8 +188,8 @@ class MineralController extends Controller
 
             $mineral->save();
 
-            if (!empty($object->resources)) {
-                foreach($object->resources as $r) {
+            if (! empty($object->resources)) {
+                foreach ($object->resources as $r) {
                     $resource = new Resource;
                     $resource->name = $r->name;
                     $resource->description = $r->description;

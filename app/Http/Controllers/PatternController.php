@@ -165,7 +165,7 @@ class PatternController extends Controller
 
     public function getJSON(Request $request)
     {
-        if (!empty($request->query('tag'))) {
+        if (! empty($request->query('tag'))) {
             $tag = Tag::where('name', '=', $request->query('tag'))->first();
             if (empty($tag)) {
                 return response('{"patterns": []}')->header('Content-Type', 'application/json');
@@ -175,7 +175,7 @@ class PatternController extends Controller
             $patterns = Pattern::with(['tags', 'slots'])->get()->toJSON();
         }
 
-        $patterns = '{"patterns":' . $patterns . '}';
+        $patterns = '{"patterns":'.$patterns.'}';
 
         return response($patterns)->header('Content-Type', 'application/json');
     }
@@ -192,7 +192,7 @@ class PatternController extends Controller
 
         $newRecordsCount = 0;
 
-        foreach($data->patterns as $object) {
+        foreach ($data->patterns as $object) {
             $pattern = new Pattern;
 
             $pattern->name = $object->name;
@@ -206,16 +206,16 @@ class PatternController extends Controller
             $pattern->save();
 
             $profession = Profession::where('name', '=', $object->profession_name)->first();
-            if (!empty($profession)) {
+            if (! empty($profession)) {
                 $pattern->professions()->save($profession);
             } else {
-                if (!in_array($object->profession_name, $missingProfessions)) {
+                if (! in_array($object->profession_name, $missingProfessions)) {
                     $missingProfessions[] = $object->profession_name;
                 }
             }
 
-            if (!empty($object->slots)) {
-                foreach($object->slots as $slot) {
+            if (! empty($object->slots)) {
+                foreach ($object->slots as $slot) {
                     $s = new PatternSlot;
                     $s->name = $slot->name;
                     $s->required_tag = $slot->required_tag;
