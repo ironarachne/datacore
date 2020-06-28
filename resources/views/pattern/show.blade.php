@@ -47,8 +47,10 @@
                     @endforeach
                 </ul>
 
+                @if (Auth::user()->is_admin)
                 <p><a href="{{ route('pattern.edit', ['pattern'=>$pattern]) }}"
                       class="btn btn-primary">Edit</a></p>
+                @endif
             </div>
         </div>
     </div>

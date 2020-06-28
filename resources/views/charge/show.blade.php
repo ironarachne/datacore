@@ -9,7 +9,7 @@
                 <p><strong>Identifier:</strong> {{ $charge->identifier }}</p>
                 <p><strong>Noun (Plural):</strong> {{ $charge->noun }} ({{ $charge->noun_plural }})</p>
                 @if($charge->descriptor)
-                <p><strong>Descriptor:</strong> {{ $charge->descriptor }}</p>
+                    <p><strong>Descriptor:</strong> {{ $charge->descriptor }}</p>
                 @endif
                 @if($charge->single_only)
                     <p><strong>Single Only</strong></p>
@@ -18,8 +18,10 @@
                 <p><strong>Tags:</strong> @foreach($charge->tags as $tag){{$tag->name}}@if (!$loop->last)
                         , @endif @endforeach</p>
 
-                <p><a href="{{ route('charge.edit', ['charge' => $charge]) }}"
-                      class="btn btn-primary">Edit</a></p>
+                @if (Auth::user()->is_admin)
+                    <p><a href="{{ route('charge.edit', ['charge' => $charge]) }}"
+                          class="btn btn-primary">Edit</a></p>
+                @endif
             </div>
         </div>
     </div>

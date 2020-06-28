@@ -11,6 +11,7 @@
                         {{ session('status') }}
                     </div>
                 @endif
+                @if (Auth::user()->is_admin)
                 <p><a href="{{ route('profession.create') }}" class="btn btn-primary">Create New</a></p>
 
                 <div class="card">
@@ -29,6 +30,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <h2>List of Professions</h2>
 

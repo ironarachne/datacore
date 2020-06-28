@@ -11,8 +11,11 @@
                         {{ session('status') }}
                     </div>
                 @endif
+                @if (Auth::user()->is_admin)
                 <p><a href="{{ route('biome.create') }}" class="btn btn-primary">Create New</a></p>
+                @endif
 
+                @if (Auth::user()->is_admin)
                 <div class="card">
                     <div class="card-body">
                         <p>@{{ message }}</p>
@@ -29,6 +32,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <h2>List of Biomes</h2>
                 <table class="table">

@@ -11,8 +11,10 @@
                 <p><strong>Tags:</strong> @foreach($profession->tags as $tag){{$tag->name}}@if (!$loop->last)
                         , @endif @endforeach</p>
 
+                @if (Auth::user()->is_admin)
                 <p><a href="{{ route('profession.edit', ['profession'=>$profession]) }}"
                       class="btn btn-primary">Edit</a></p>
+                @endif
             </div>
         </div>
     </div>

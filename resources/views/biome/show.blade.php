@@ -18,10 +18,11 @@
                 <p><strong>Temperature Range:</strong> {{ $biome->temperature_min }} - {{ $biome->temperature_max }}</p>
                 <p><strong>Precipitation Range:</strong> {{ $biome->precipitation_min }}
                     - {{ $biome->precipitation_max }}</p>
-                <p><strong>Tags:</strong> @foreach($biome->tags as $tag){{$tag->name}}@if (!$loop->last), @endif @endforeach</p>
-
-                <a href="{{ route('biome.edit', ['biome'=>$biome]) }}" class="btn btn-primary">Edit</a>
-
+                <p><strong>Tags:</strong> @foreach($biome->tags as $tag){{$tag->name}}@if (!$loop->last)
+                        , @endif @endforeach</p>
+                @if (Auth::user()->is_admin)
+                    <a href="{{ route('biome.edit', ['biome'=>$biome]) }}" class="btn btn-primary">Edit</a>
+                @endif
             </div>
         </div>
     </div>

@@ -40,8 +40,10 @@
                     </table>
                 @endif
 
+                @if (Auth::user()->is_admin)
                 <p><a href="{{ route('mineral.edit', ['mineral'=> $mineral]) }}"
                       class="btn btn-primary">Edit</a></p>
+                @endif
             </div>
         </div>
     </div>

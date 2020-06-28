@@ -19,8 +19,10 @@
                 <p><strong>Tags:</strong> @foreach($species->tags as $tag){{$tag->name}}@if (!$loop->last)
                         , @endif @endforeach</p>
 
+                @if (Auth::user()->is_admin)
                 <p><a href="{{ route('species.edit', ['species' => $species]) }}"
                       class="btn btn-primary">Edit</a></p>
+                @endif
 
                 @if(sizeof($species->resources) > 0)
                 <h2>Resources</h2>
