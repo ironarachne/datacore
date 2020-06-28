@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mineral;
 use App\Resource;
+use App\Tag;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -144,9 +145,17 @@ class MineralController extends Controller
         return redirect()->route('mineral.show', ['mineral' => $mineral]);
     }
 
-    public function getJSON()
+    public function getJSON(Request $request)
     {
-        $minerals = Mineral::with('tags')->get()->toJSON();
+        if (!empty($request->query('tag'))) {
+            $tag = Tag::where('name', '=', $request->query('tag'))->first();
+            if (empty($tag)) {
+                return response('{"minerals": []}')->header('Content-Type', 'application/json');
+            }
+            $minerals = $tag->minerals()->with('tags')->get()->toJson();
+        } else {
+            $minerals = Mineral::with('tags')->get()->toJSON();
+        }
 
         $minerals = '{"minerals":' . $minerals . '}';
 

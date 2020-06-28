@@ -123,9 +123,17 @@ class BiomeController extends Controller
         $biome->save();
     }
 
-    public function getJSON()
+    public function getJSON(Request $request)
     {
-        $biomes = Biome::with('tags')->get()->toJSON();
+        if (!empty($request->query('tag'))) {
+            $tag = Tag::where('name', '=', $request->query('tag'))->first();
+            if (empty($tag)) {
+                return response('{"biomes": []}')->header('Content-Type', 'application/json');
+            }
+            $biomes = $tag->biomes()->with('tags')->get()->toJson();
+        } else {
+            $biomes = Biome::with('tags')->get()->toJson();
+        }
 
         $biomes = '{"biomes":' . $biomes. '}';
 
