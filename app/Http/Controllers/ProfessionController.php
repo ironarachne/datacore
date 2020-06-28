@@ -114,7 +114,7 @@ class ProfessionController extends Controller
 
     public function getJSON(Request $request)
     {
-        if (!empty($request->query('tag'))) {
+        if (! empty($request->query('tag'))) {
             $tag = Tag::where('name', '=', $request->query('tag'))->first();
             if (empty($tag)) {
                 return response('{"professions": []}')->header('Content-Type', 'application/json');
@@ -124,7 +124,7 @@ class ProfessionController extends Controller
             $professions = Profession::with('tags')->get()->toJson();
         }
 
-        $professions = '{"professions":' . $professions . '}';
+        $professions = '{"professions":'.$professions.'}';
 
         return response($professions)->header('Content-Type', 'application/json');
     }
@@ -139,7 +139,7 @@ class ProfessionController extends Controller
 
         $newRecordsCount = 0;
 
-        foreach($data->professions as $object) {
+        foreach ($data->professions as $object) {
             $profession = new Profession;
 
             $profession->name = $object->name;
