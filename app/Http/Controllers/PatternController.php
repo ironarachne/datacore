@@ -170,9 +170,9 @@ class PatternController extends Controller
             if (empty($tag)) {
                 return response('{"patterns": []}')->header('Content-Type', 'application/json');
             }
-            $patterns = $tag->patterns()->with(['tags', 'slots'])->get()->toJson();
+            $patterns = $tag->patterns()->with(['tags', 'slots', 'professions'])->get()->toJson();
         } else {
-            $patterns = Pattern::with(['tags', 'slots'])->get()->toJSON();
+            $patterns = Pattern::with(['tags', 'slots', 'professions'])->get()->toJSON();
         }
 
         $patterns = '{"patterns":'.$patterns.'}';
