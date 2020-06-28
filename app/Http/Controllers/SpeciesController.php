@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\AgeCategory;
 use App\Resource;
 use App\Species;
+use App\Tag;
 use App\TraitTemplate;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +21,16 @@ class SpeciesController extends Controller
      */
     public function index(Request $request)
     {
-        $species = Species::orderBy('name')->get();
+        if (!empty($request->query('tag'))) {
+            $tag = Tag::where('name', '=', $request->query('tag'))->first();
+            if (empty($tag)) {
+                $species = [];
+            } else {
+                $species = $tag->species()->orderBy('name')->get();
+            }
+        } else {
+            $species = Species::orderBy('name')->get();
+        }
 
         return view('species.index', ['species' => $species]);
     }
@@ -336,9 +346,17 @@ class SpeciesController extends Controller
         update_tags($traitTemplate, $input['tags']);
     }
 
-    public function getJSON()
+    public function getJSON(Request $request)
     {
-        $species = Species::with(['tags', 'traitTemplates', 'resources', 'ageCategories'])->get()->toJSON();
+        if (!empty($request->query('tag'))) {
+            $tag = Tag::where('name', '=', $request->query('tag'))->first();
+            if (empty($tag)) {
+                return response('{"species": []}')->header('Content-Type', 'application/json');
+            }
+            $species = $tag->species()->with(['tags', 'traitTemplates', 'resources', 'ageCategories'])->get()->toJSON();
+        } else {
+            $species = Species::with(['tags', 'traitTemplates', 'resources', 'ageCategories'])->get()->toJSON();
+        }
 
         $species = '{"species":' . $species . '}';
 

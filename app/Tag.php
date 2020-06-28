@@ -22,6 +22,21 @@ class Tag extends Model
         return $this->morphedByMany('App\Biome', 'taggable');
     }
 
+    public function charges()
+    {
+        return $this->morphedByMany('App\Charge', 'taggable');
+    }
+
+    public function minerals()
+    {
+        return $this->morphedByMany('App\Mineral', 'taggable');
+    }
+
+    public function patterns()
+    {
+        return $this->morphedByMany('App\Pattern', 'taggable');
+    }
+
     public function professions()
     {
         return $this->morphedByMany('App\Profession', 'taggable');
@@ -39,6 +54,6 @@ class Tag extends Model
 
     public function traitTemplates()
     {
-        return $this->morphedByMany('App\Species', 'taggable');
+        return $this->morphedByMany('App\TraitTemplate', 'taggable');
     }
 }

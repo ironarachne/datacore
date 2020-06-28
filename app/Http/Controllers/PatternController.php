@@ -163,9 +163,17 @@ class PatternController extends Controller
         $slot->save();
     }
 
-    public function getJSON()
+    public function getJSON(Request $request)
     {
-        $patterns = Pattern::with(['tags', 'slots'])->get()->toJSON();
+        if (!empty($request->query('tag'))) {
+            $tag = Tag::where('name', '=', $request->query('tag'))->first();
+            if (empty($tag)) {
+                return response('{"patterns": []}')->header('Content-Type', 'application/json');
+            }
+            $patterns = $tag->patterns()->with(['tags', 'slots'])->get()->toJson();
+        } else {
+            $patterns = Pattern::with(['tags', 'slots'])->get()->toJSON();
+        }
 
         $patterns = '{"patterns":' . $patterns . '}';
 

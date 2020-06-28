@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Profession;
+use App\Tag;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -111,9 +112,17 @@ class ProfessionController extends Controller
         update_tags($profession, $request->tags);
     }
 
-    public function getJSON()
+    public function getJSON(Request $request)
     {
-        $professions = Profession::with('tags')->get()->toJSON();
+        if (!empty($request->query('tag'))) {
+            $tag = Tag::where('name', '=', $request->query('tag'))->first();
+            if (empty($tag)) {
+                return response('{"professions": []}')->header('Content-Type', 'application/json');
+            }
+            $professions = $tag->professions()->with('tags')->get()->toJson();
+        } else {
+            $professions = Profession::with('tags')->get()->toJson();
+        }
 
         $professions = '{"professions":' . $professions . '}';
 

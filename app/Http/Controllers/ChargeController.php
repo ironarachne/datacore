@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Charge;
+use App\Tag;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -115,11 +116,19 @@ class ChargeController extends Controller
         update_tags($charge, $request->tags);
     }
 
-    public function getJSON()
+    public function getJSON(Request $request)
     {
-        $charges = Charge::with('tags')->get()->toJSON();
+        if (! empty($request->query('tag'))) {
+            $tag = Tag::where('name', '=', $request->query('tag'))->first();
+            if (empty($tag)) {
+                return response('{"charges": []}')->header('Content-Type', 'application/json');
+            }
+            $charges = $tag->charges()->with('tags')->get()->toJson();
+        } else {
+            $charges = Charge::with('tags')->get()->toJson();
+        }
 
-        $charges = '{"charges":' . $charges . '}';
+        $charges = '{"charges":'.$charges.'}';
 
         return response($charges);
     }
@@ -134,7 +143,7 @@ class ChargeController extends Controller
 
         $newRecordsCount = 0;
 
-        foreach($data->charges as $object) {
+        foreach ($data->charges as $object) {
             $charge = new Charge;
 
             $charge->name = $object->name;
