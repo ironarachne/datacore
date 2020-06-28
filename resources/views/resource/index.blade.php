@@ -16,7 +16,9 @@
                     <p>Showing only resources with tag "{{ $tag }}".</p>
                 @endif
 
+                @if (Auth::user()->is_admin)
                 <p><a href="{{ route('resource.create') }}" class="btn btn-primary">Create New</a></p>
+                @endif
 
                 <h2>List of Resources</h2>
                 <ul>

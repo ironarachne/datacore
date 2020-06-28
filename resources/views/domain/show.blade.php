@@ -11,8 +11,10 @@
                 <p><strong>Holy Items:</strong> {{ $domain->holy_items }}</p>
                 <p><strong>Holy Symbols:</strong> {{ $domain->holy_symbols }}</p>
 
-                <p><a href="{{ route('domain.edit', ['domain' => $domain]) }}"
-                      class="btn btn-primary">Edit</a></p>
+                @if (Auth::user()->is_admin)
+                    <p><a href="{{ route('domain.edit', ['domain' => $domain]) }}"
+                          class="btn btn-primary">Edit</a></p>
+                @endif
             </div>
         </div>
     </div>

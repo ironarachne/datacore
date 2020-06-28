@@ -18,9 +18,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ asset('img/apple-touch-icon.png') }}">
 </head>
 <body>
     <div id="app">
+        @if (Auth::user())
+            <input type="hidden" ref="apiToken" value="{{ Auth::user()->api_token }}">
+        @endif
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -31,6 +36,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    @if (Auth::user())
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li><a href="{{ url('/biome') }}" class="nav-link">Biomes</a></li>
@@ -42,6 +48,7 @@
                         <li><a href="{{ url('/resource') }}" class="nav-link">Resources</a></li>
                         <li><a href="{{ url('/species') }}" class="nav-link">Species</a></li>
                     </ul>
+                    @endif
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">

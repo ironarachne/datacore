@@ -11,7 +11,28 @@
                         {{ session('status') }}
                     </div>
                 @endif
+                @if (Auth::user()->is_admin)
                 <p><a href="{{ route('biome.create') }}" class="btn btn-primary">Create New</a></p>
+                @endif
+
+                @if (Auth::user()->is_admin)
+                <div class="card">
+                    <div class="card-body">
+                        <p>@{{ message }}</p>
+
+                        <h2 class="card-title">Process JSON Data</h2>
+                        <p>The JSON must have a parent entity "biomes" that contains an array of properly-formatted pattern.</p>
+                        <input type="hidden" ref="jsonType" value="biomes">
+                        <div class="form-group">
+                            <label for="json-data">JSON</label>
+                            <textarea class="form-control" id="json-data" rows="12" v-model="jsonData"></textarea>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-danger" id="create-from-json" v-on:click="createFromJson" :disabled="!jsonData">Process</button>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
                 <h2>List of Biomes</h2>
                 <table class="table">

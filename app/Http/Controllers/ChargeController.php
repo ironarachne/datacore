@@ -123,4 +123,40 @@ class ChargeController extends Controller
 
         return response($charges);
     }
+
+    public function storeFromJson(Request $request)
+    {
+        $data = json_decode($request->data);
+
+        if (empty($data->charges)) {
+            return response('invalid data for charges', '400');
+        }
+
+        $newRecordsCount = 0;
+
+        foreach($data->charges as $object) {
+            $charge = new Charge;
+
+            $charge->name = $object->name;
+            $charge->identifier = $object->identifier;
+            $charge->noun = $object->noun;
+            $charge->noun_plural = $object->noun_plural;
+            $charge->descriptor = $object->descriptor;
+            $charge->single_only = $object->single_only;
+
+            $charge->save();
+
+            if (sizeof($object->tags) > 0) {
+                $tags = implode(',', $object->tags);
+                update_tags($charge, $tags);
+            }
+
+            $newRecordsCount++;
+        }
+
+        return response()->json([
+            'state' => 'success',
+            'new_records_count' => $newRecordsCount,
+        ]);
+    }
 }

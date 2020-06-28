@@ -18,9 +18,9 @@ class SpeciesController extends Controller
      *
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $species = Species::all();
+        $species = Species::orderBy('name')->get();
 
         return view('species.index', ['species' => $species]);
     }
@@ -343,5 +343,102 @@ class SpeciesController extends Controller
         $species = '{"species":' . $species . '}';
 
         return response($species)->header('Content-Type', 'application/json');
+    }
+
+    public function storeFromJson(Request $request)
+    {
+        $data = json_decode($request->data);
+
+        if (empty($data->species)) {
+            return response('invalid data for species', '400');
+        }
+
+        $newRecordsCount = 0;
+
+        foreach($data->species as $object) {
+            $species = new Species;
+
+            $species->name = $object->name;
+            $species->plural_name = $object->plural_name;
+            $species->adjective = $object->adjective;
+            $species->commonality = $object->commonality;
+            $species->humidity_max = $object->max_humidity;
+            $species->humidity_min = $object->min_humidity;
+            $species->temperature_max = $object->max_temperature;
+            $species->temperature_min = $object->min_temperature;
+
+            $species->save();
+
+            if (!empty($object->age_categories)) {
+                foreach($object->age_categories as $ac) {
+                    $ageCategory = new AgeCategory;
+                    $ageCategory->name = $ac->name;
+                    $ageCategory->age_min = $ac->age_min;
+                    $ageCategory->age_max = $ac->age_max;
+                    $ageCategory->commonality = $ac->commonality;
+                    $ageCategory->height_base_female = $ac->female_height_base;
+                    $ageCategory->height_base_male = $ac->male_height_base;
+                    $ageCategory->height_range_dice = $ac->height_range_dice->number . 'd' . $ac->height_range_dice->sides;
+                    $ageCategory->weight_base_female = $ac->female_weight_base;
+                    $ageCategory->weight_base_male = $ac->male_weight_base;
+                    $ageCategory->weight_range_dice = $ac->weight_range_dice->number . 'd' . $ac->weight_range_dice->sides;
+                    $ageCategory->size_category = $ac->size_category->name;
+                    $species->ageCategories()->save($ageCategory);
+                }
+            }
+
+            if (!empty($object->possible_traits)) {
+                foreach($object->possible_traits as $t) {
+                    $trait = new TraitTemplate;
+                    $trait->name = $t->name;
+                    $trait->possible_values = implode(',', $t->possible_values);
+                    $trait->possible_descriptors = implode(',', $t->possible_descriptors);
+                    $trait->trait_type = 'possible';
+                    $species->traitTemplates()->save($trait);
+                    $tTags = implode(',', $t->tags);
+                    update_tags($trait, $tTags);
+                }
+            }
+
+            if (!empty($object->common_traits)) {
+                foreach($object->common_traits as $t) {
+                    $trait = new TraitTemplate;
+                    $trait->name = $t->name;
+                    $trait->possible_values = implode(',', $t->possible_values);
+                    $trait->possible_descriptors = implode(',', $t->possible_descriptors);
+                    $trait->trait_type = 'common';
+                    $species->traitTemplates()->save($trait);
+                    $tTags = implode(',', $t->tags);
+                    update_tags($trait, $tTags);
+                }
+            }
+
+            if (!empty($object->resources)) {
+                foreach($object->resources as $r) {
+                    $resource = new Resource;
+                    $resource->name = $r->name;
+                    $resource->description = $r->description;
+                    $resource->main_material = $r->main_material;
+                    $resource->origin = $r->origin;
+                    $resource->commonality = $r->commonality;
+                    $resource->value = $r->value;
+                    $species->resources()->save($resource);
+                    $rTags = implode(',', $r->tags);
+                    update_tags($resource, $rTags);
+                }
+            }
+
+            if (sizeof($object->tags) > 0) {
+                $tags = implode(',', $object->tags);
+                update_tags($species, $tags);
+            }
+
+            $newRecordsCount++;
+        }
+
+        return response()->json([
+            'state' => 'success',
+            'new_records_count' => $newRecordsCount,
+        ]);
     }
 }

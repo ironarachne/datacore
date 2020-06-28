@@ -152,4 +152,54 @@ class MineralController extends Controller
 
         return response($minerals)->header('Content-Type', 'application/json');
     }
+
+    public function storeFromJson(Request $request)
+    {
+        $data = json_decode($request->data);
+
+        if (empty($data->minerals)) {
+            return response('invalid data for mineral', '400');
+        }
+
+        $newRecordsCount = 0;
+
+        foreach($data->minerals as $object) {
+            $mineral = new Mineral;
+
+            $mineral->name = $object->name;
+            $mineral->plural_name = $object->plural_name;
+            $mineral->hardness = $object->hardness;
+            $mineral->malleability = $object->malleability;
+            $mineral->commonality = $object->commonality;
+
+            $mineral->save();
+
+            if (!empty($object->resources)) {
+                foreach($object->resources as $r) {
+                    $resource = new Resource;
+                    $resource->name = $r->name;
+                    $resource->description = $r->description;
+                    $resource->main_material = $r->main_material;
+                    $resource->origin = $r->origin;
+                    $resource->commonality = $r->commonality;
+                    $resource->value = $r->value;
+                    $mineral->resources()->save($resource);
+                    $rTags = implode(',', $r->tags);
+                    update_tags($resource, $rTags);
+                }
+            }
+
+            if (sizeof($object->tags) > 0) {
+                $tags = implode(',', $object->tags);
+                update_tags($mineral, $tags);
+            }
+
+            $newRecordsCount++;
+        }
+
+        return response()->json([
+            'state' => 'success',
+            'new_records_count' => $newRecordsCount,
+        ]);
+    }
 }

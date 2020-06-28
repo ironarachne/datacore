@@ -17,7 +17,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" class="form-control">
+                        <input type="text" id="name" name="name" class="form-control" value="{{ $domain->name }}">
                     </div>
                     <div class="form-group">
                         <label for="appearance_traits">Appearance Traits</label>

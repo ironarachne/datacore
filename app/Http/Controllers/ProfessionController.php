@@ -17,7 +17,7 @@ class ProfessionController extends Controller
      */
     public function index()
     {
-        $professions = Profession::all();
+        $professions = Profession::orderBy('name')->get();
 
         return view('profession.index', ['professions' => $professions]);
     }
@@ -118,5 +118,37 @@ class ProfessionController extends Controller
         $professions = '{"professions":' . $professions . '}';
 
         return response($professions)->header('Content-Type', 'application/json');
+    }
+
+    public function storeFromJson(Request $request)
+    {
+        $data = json_decode($request->data);
+
+        if (empty($data->professions)) {
+            return response('invalid data for professions', '400');
+        }
+
+        $newRecordsCount = 0;
+
+        foreach($data->professions as $object) {
+            $profession = new Profession;
+
+            $profession->name = $object->name;
+            $profession->description = $object->description;
+
+            $profession->save();
+
+            if (sizeof($object->tags) > 0) {
+                $tags = implode(',', $object->tags);
+                update_tags($profession, $tags);
+            }
+
+            $newRecordsCount++;
+        }
+
+        return response()->json([
+            'state' => 'success',
+            'new_records_count' => $newRecordsCount,
+        ]);
     }
 }

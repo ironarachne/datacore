@@ -49490,10 +49490,27 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 var app = new Vue({
   el: '#app',
   data: {
+    apiToken: '',
+    jsonData: '',
+    jsonType: '',
     message: '',
     quickSpecies: ''
   },
   methods: {
+    createFromJson: function createFromJson() {
+      jsonData = this.jsonData;
+      this.jsonData = '';
+      axios.post('/api/' + this.jsonType, {
+        data: jsonData
+      }, {
+        headers: {
+          'Authorization': 'Bearer ' + this.apiToken
+        }
+      }).then(function (response) {
+        console.log(response);
+        app.message = 'Created ' + response.data.new_records_count + ' new charges from data';
+      });
+    },
     createQuickRace: function createQuickRace() {
       speciesName = this.quickSpecies;
       console.log('Trying to create quick species ' + speciesName);
@@ -49505,6 +49522,10 @@ var app = new Vue({
         app.message = 'Created new race: ' + response.data.name;
       });
     }
+  },
+  mounted: function mounted() {
+    this.apiToken = this.$refs.apiToken.value;
+    this.jsonType = this.$refs.jsonType.value;
   }
 });
 

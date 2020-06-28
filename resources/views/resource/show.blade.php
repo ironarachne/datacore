@@ -15,8 +15,10 @@
                 <p><strong>Tags:</strong> @foreach($resource->tags as $tag){{$tag->name}}@if (!$loop->last)
                         , @endif @endforeach</p>
 
+                @if (Auth::user()->is_admin)
                 <p><a href="{{ route('resource.edit', ['resource'=>$resource]) }}"
                       class="btn btn-primary">Edit</a></p>
+                @endif
             </div>
         </div>
     </div>
