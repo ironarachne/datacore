@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Pattern;
 use App\PatternSlot;
 use App\Profession;
+use App\Tag;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
