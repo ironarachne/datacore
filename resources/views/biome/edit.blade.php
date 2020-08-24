@@ -59,6 +59,11 @@
                                value="{{ $biome->precipitation_min }}">
                     </div>
                     <div class="form-group">
+                        <label for="possible_landmarks">Possible Landmarks</label>
+                        <input id="possible_landmarks" name="possible_landmarks" type="text" class="form-control"
+                                value="{{ $biome->possible_landmarks }}">
+                    </div>
+                    <div class="form-group">
                         <label for="tags">Tags</label>
                         <input id="tags" name="tags" type="text" class="form-control" value="{{ $tags }}">
                     </div>

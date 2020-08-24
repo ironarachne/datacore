@@ -115,6 +115,7 @@ class BiomeController extends Controller
         $biome->temperature_min = $input['temperature_min'];
         $biome->precipitation_max = $input['precipitation_max'];
         $biome->precipitation_min = $input['precipitation_min'];
+        $biome->possible_landmarks = $input['possible_landmarks'];
         $biome->type = $input['type'];
         $biome->save();
 
@@ -162,6 +163,7 @@ class BiomeController extends Controller
             $biome->precipitation_min = $object->precipitation_min;
             $biome->fauna_prevalence = $object->fauna_prevalence;
             $biome->vegetation_prevalence = $object->vegetation_prevalence;
+            $biome->possible_landmarks = $object->possible_landmarks;
             $biome->type = $object->type;
 
             $biome->save();

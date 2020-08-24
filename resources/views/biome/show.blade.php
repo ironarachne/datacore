@@ -18,6 +18,7 @@
                 <p><strong>Temperature Range:</strong> {{ $biome->temperature_min }} - {{ $biome->temperature_max }}</p>
                 <p><strong>Precipitation Range:</strong> {{ $biome->precipitation_min }}
                     - {{ $biome->precipitation_max }}</p>
+                <p><strong>Possible Landmarks:</strong> {{ $biome->possible_landmarks }}</p>
                 <p><strong>Tags:</strong> @foreach($biome->tags as $tag){{$tag->name}}@if (!$loop->last)
                         , @endif @endforeach</p>
                 @if (Auth::user()->is_admin)
