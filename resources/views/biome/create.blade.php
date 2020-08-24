@@ -53,6 +53,10 @@
                                 <input id="precipitation_min" name="precipitation_min" type="number" class="form-control">
                             </div>
                             <div class="form-group">
+                                <label for="possible_landmarks">Possible Landmarks</label>
+                                <input id="possible_landmarks" name="possible_landmarks" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
                                 <label for="tags">Tags</label>
                                 <input id="tags" name="tags" type="text" class="form-control">
                             </div>
