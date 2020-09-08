@@ -33,13 +33,27 @@
                 </div>
 
                 <h2>List of Charges</h2>
-                <ul>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Mask Image</th>
+                            <th>Lines Image</th>
+                            <th>Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     @foreach ($charges as $charge)
-                        <li>
-                            <a href="{{ route('charge.show', ['charge' => $charge]) }}">{{ $charge->name }}</a>
-                        </li>
+                        <tr>
+                            <td><a href="{{ route('charge.show', ['charge' => $charge]) }}">{{ $charge->name }}</a></td>
+                            <td><img src="https://static.ironarachne.com/images/heraldry/sources/charges/{{ $charge->identifier }}.png" class="heraldry-image"></td>
+                            <td><img src="https://static.ironarachne.com/images/heraldry/sources/charges/{{ $charge->identifier }}-lines.png" class="heraldry-image"></td>
+                            <td>{{ convert_tags_to_string($charge) }}</td>
+                        </tr>
                     @endforeach
-                </ul>
+                    </tbody>
+                </table>
 
                 {{ $charges->links() }}
             </div>
