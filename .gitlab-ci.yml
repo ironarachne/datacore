@@ -7,8 +7,8 @@ docker-build:
     - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" registry.gitlab.com
   script:
     - VERSION_TAG=`cat VERSION`
-    - docker build -t registry.gitlab.com/benovermyer/datacore:$VERSION_TAG -t registry.gitlab.com/benovermyer/datacore:latest .
-    - docker push registry.gitlab.com/benovermyer/datacore:$VERSION_TAG
-    - docker push registry.gitlab.com/benovermyer/datacore:latest
+    - docker build -t registry.gitlab.com/ironarachne/datacore:$VERSION_TAG -t registry.gitlab.com/ironarachne/datacore:latest .
+    - docker push registry.gitlab.com/ironarachne/datacore:$VERSION_TAG
+    - docker push registry.gitlab.com/ironarachne/datacore:latest
   only:
     - master
