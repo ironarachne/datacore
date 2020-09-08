@@ -17,7 +17,7 @@ class DomainController extends Controller
      */
     public function index()
     {
-        $domains = Domain::all();
+        $domains = Domain::orderBy('name')->paginate(15);
 
         return view('domain.index', ['domains' => $domains]);
     }
@@ -138,26 +138,10 @@ class DomainController extends Controller
             $domain = new Domain;
 
             $domain->name = $object->name;
-
-            if (sizeof($object->appearance_traits) > 0) {
-                $appearance_traits = implode(',', $object->appearance_traits);
-                $domain->appearance_traits = $appearance_traits;
-            }
-
-            if (sizeof($object->personality_traits) > 0) {
-                $personality_traits = implode(',', $object->personality_traits);
-                $domain->personality_traits = $personality_traits;
-            }
-
-            if (sizeof($object->holy_items) > 0) {
-                $holy_items = implode(',', $object->holy_items);
-                $domain->holy_items = $holy_items;
-            }
-
-            if (sizeof($object->holy_symbols) > 0) {
-                $holy_symbols = implode(',', $object->holy_symbols);
-                $domain->holy_symbols = $holy_symbols;
-            }
+            $domain->appearance_traits = $object->appearance_traits;
+            $domain->personality_traits = $object->personality_traits;
+            $domain->holy_items = $object->holy_items;
+            $domain->holy_symbols = $object->holy_symbols;
 
             $domain->save();
 

@@ -36,6 +36,8 @@
                     @endforeach
                     </tbody>
                 </table>
+
+                {{ $professions->links() }}
             </div>
         </div>
     </div>

@@ -20,7 +20,7 @@ class PatternController extends Controller
      */
     public function index()
     {
-        $patterns = Pattern::All();
+        $patterns = Pattern::orderBy('name')->paginate(15);
 
         return view('pattern.index', ['patterns' => $patterns]);
     }
@@ -40,6 +40,15 @@ class PatternController extends Controller
     public function json()
     {
         return view('pattern.json');
+    }
+
+    public function search(Request $request)
+    {
+        $name = $request->input('name');
+
+        $patterns = Pattern::where('name', 'like', "%$name%")->orderBy('name')->paginate(15);
+
+        return view('pattern.index', ['patterns' => $patterns]);
     }
 
     /**
@@ -171,7 +180,7 @@ class PatternController extends Controller
 
     public function getJSON(Request $request)
     {
-        if (! empty($request->query('tag'))) {
+        if (!empty($request->query('tag'))) {
             $tag = Tag::where('name', '=', $request->query('tag'))->first();
             if (empty($tag)) {
                 return response('{"patterns": []}')->header('Content-Type', 'application/json');
@@ -181,7 +190,7 @@ class PatternController extends Controller
             $patterns = Pattern::with(['tags', 'slots', 'professions'])->get()->toJSON();
         }
 
-        $patterns = '{"patterns":'.$patterns.'}';
+        $patterns = '{"patterns":' . $patterns . '}';
 
         return response($patterns)->header('Content-Type', 'application/json');
     }
@@ -211,16 +220,18 @@ class PatternController extends Controller
 
             $pattern->save();
 
-            $profession = Profession::where('name', '=', $object->profession_name)->first();
-            if (! empty($profession)) {
-                $pattern->professions()->save($profession);
-            } else {
-                if (! in_array($object->profession_name, $missingProfessions)) {
-                    $missingProfessions[] = $object->profession_name;
+            foreach ($object->professions as $p) {
+                $profession = Profession::where('name', '=', $p->name)->first();
+                if (!empty($profession)) {
+                    $pattern->professions()->save($profession);
+                } else {
+                    if (!in_array($object->profession_name, $missingProfessions)) {
+                        $missingProfessions[] = $p->name;
+                    }
                 }
             }
 
-            if (! empty($object->slots)) {
+            if (!empty($object->slots)) {
                 foreach ($object->slots as $slot) {
                     $s = new PatternSlot;
                     $s->name = $slot->name;
@@ -233,7 +244,11 @@ class PatternController extends Controller
             }
 
             if (sizeof($object->tags) > 0) {
-                $tags = implode(',', $object->tags);
+                $tagArray = [];
+                foreach ($object->tags as $tag) {
+                    $tagArray [] = $tag->name;
+                }
+                $tags = implode(',', $tagArray);
                 update_tags($pattern, $tags);
             }
 

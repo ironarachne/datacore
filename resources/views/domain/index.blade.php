@@ -26,6 +26,8 @@
                         </li>
                     @endforeach
                 </ul>
+
+                {{ $domains->links() }}
             </div>
         </div>
     </div>

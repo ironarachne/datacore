@@ -29,7 +29,7 @@ class SpeciesController extends Controller
                 $species = $tag->species()->orderBy('name')->get();
             }
         } else {
-            $species = Species::orderBy('name')->get();
+            $species = Species::orderBy('name')->paginate(15);
         }
 
         return view('species.index', ['species' => $species]);
@@ -53,6 +53,15 @@ class SpeciesController extends Controller
     public function quick()
     {
         return view('species.quick');
+    }
+
+    public function search(Request $request)
+    {
+        $name = $request->input('name');
+
+        $species = Species::where('name', 'like', "%$name%")->orderBy('name')->paginate(15);
+
+        return view('species.index', ['species' => $species]);
     }
 
     /**
@@ -406,10 +415,10 @@ class SpeciesController extends Controller
             $species->plural_name = $object->plural_name;
             $species->adjective = $object->adjective;
             $species->commonality = $object->commonality;
-            $species->humidity_max = $object->max_humidity;
-            $species->humidity_min = $object->min_humidity;
-            $species->temperature_max = $object->max_temperature;
-            $species->temperature_min = $object->min_temperature;
+            $species->humidity_max = $object->humidity_max;
+            $species->humidity_min = $object->humidity_min;
+            $species->temperature_max = $object->temperature_max;
+            $species->temperature_min = $object->temperature_min;
 
             $species->save();
 
@@ -420,13 +429,13 @@ class SpeciesController extends Controller
                     $ageCategory->age_min = $ac->age_min;
                     $ageCategory->age_max = $ac->age_max;
                     $ageCategory->commonality = $ac->commonality;
-                    $ageCategory->height_base_female = $ac->female_height_base;
-                    $ageCategory->height_base_male = $ac->male_height_base;
-                    $ageCategory->height_range_dice = $ac->height_range_dice->number . 'd' . $ac->height_range_dice->sides;
-                    $ageCategory->weight_base_female = $ac->female_weight_base;
-                    $ageCategory->weight_base_male = $ac->male_weight_base;
-                    $ageCategory->weight_range_dice = $ac->weight_range_dice->number . 'd' . $ac->weight_range_dice->sides;
-                    $ageCategory->size_category = $ac->size_category->name;
+                    $ageCategory->height_base_female = $ac->height_base_female;
+                    $ageCategory->height_base_male = $ac->height_base_male;
+                    $ageCategory->height_range_dice = $ac->height_range_dice;
+                    $ageCategory->weight_base_female = $ac->weight_base_female;
+                    $ageCategory->weight_base_male = $ac->weight_base_male;
+                    $ageCategory->weight_range_dice = $ac->weight_range_dice;
+                    $ageCategory->size_category = $ac->size_category;
                     $species->ageCategories()->save($ageCategory);
                 }
             }
@@ -435,11 +444,16 @@ class SpeciesController extends Controller
                 foreach ($object->possible_traits as $t) {
                     $trait = new TraitTemplate;
                     $trait->name = $t->name;
-                    $trait->possible_values = implode(',', $t->possible_values);
-                    $trait->possible_descriptors = implode(',', $t->possible_descriptors);
+                    $trait->possible_values = $t->possible_values;
+                    $trait->possible_descriptors = $t->possible_descriptors;
                     $trait->trait_type = 'possible';
                     $species->traitTemplates()->save($trait);
-                    $tTags = implode(',', $t->tags);
+
+                    $tagArray = [];
+                    foreach ($t->tags as $tag) {
+                        $tagArray [] = $tag->name;
+                    }
+                    $tTags = implode(',', $tagArray);
                     update_tags($trait, $tTags);
                 }
             }
@@ -448,11 +462,15 @@ class SpeciesController extends Controller
                 foreach ($object->common_traits as $t) {
                     $trait = new TraitTemplate;
                     $trait->name = $t->name;
-                    $trait->possible_values = implode(',', $t->possible_values);
-                    $trait->possible_descriptors = implode(',', $t->possible_descriptors);
+                    $trait->possible_values = $t->possible_values;
+                    $trait->possible_descriptors = $t->possible_descriptors;
                     $trait->trait_type = 'common';
                     $species->traitTemplates()->save($trait);
-                    $tTags = implode(',', $t->tags);
+                    $tagArray = [];
+                    foreach ($t->tags as $tag) {
+                        $tagArray [] = $tag->name;
+                    }
+                    $tTags = implode(',', $tagArray);
                     update_tags($trait, $tTags);
                 }
             }
@@ -467,13 +485,21 @@ class SpeciesController extends Controller
                     $resource->commonality = $r->commonality;
                     $resource->value = $r->value;
                     $species->resources()->save($resource);
-                    $rTags = implode(',', $r->tags);
+                    $tagArray = [];
+                    foreach ($r->tags as $tag) {
+                        $tagArray [] = $tag->name;
+                    }
+                    $rTags = implode(',', $tagArray);
                     update_tags($resource, $rTags);
                 }
             }
 
             if (sizeof($object->tags) > 0) {
-                $tags = implode(',', $object->tags);
+                $tagArray = [];
+                foreach ($object->tags as $tag) {
+                    $tagArray [] = $tag->name;
+                }
+                $tags = implode(',', $tagArray);
                 update_tags($species, $tags);
             }
 

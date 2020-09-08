@@ -18,7 +18,7 @@ class ChargeController extends Controller
      */
     public function index()
     {
-        $charges = Charge::all();
+        $charges = Charge::orderBy('identifier')->paginate(15);
 
         return view('charge.index', ['charges' => $charges]);
     }
@@ -36,6 +36,15 @@ class ChargeController extends Controller
     public function json()
     {
         return view('charge.json');
+    }
+
+    public function search(Request $request)
+    {
+        $name = $request->input('name');
+
+        $charges = Charge::where('name', 'like', "%$name%")->orderBy('name')->paginate(15);
+
+        return view('charge.search', ['charges' => $charges]);
     }
 
     /**
@@ -135,7 +144,7 @@ class ChargeController extends Controller
 
         $charges = '{"charges":' . $charges . '}';
 
-        return response($charges);
+        return response($charges)->header('Content-Type', 'application/json');
     }
 
     public function storeFromJson(Request $request)
@@ -161,7 +170,11 @@ class ChargeController extends Controller
             $charge->save();
 
             if (sizeof($object->tags) > 0) {
-                $tags = implode(',', $object->tags);
+                $tagArray = [];
+                foreach ($object->tags as $tag) {
+                    $tagArray [] = $tag->name;
+                }
+                $tags = implode(',', $tagArray);
                 update_tags($charge, $tags);
             }
 

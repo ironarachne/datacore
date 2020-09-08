@@ -22,9 +22,9 @@ class ResourceController extends Controller
         $tag = $request->tag;
 
         if (!empty($tag)) {
-            $resources = Resource::withTag($tag);
+            $resources = Resource::withTag($tag)->orderBy('name')->paginate(15);
         } else {
-            $resources = Resource::all();
+            $resources = Resource::orderBy('name')->paginate(15);
         }
 
         return view('resource.index', ['resources' => $resources, 'tag' => $tag]);
@@ -43,6 +43,15 @@ class ResourceController extends Controller
     public function json()
     {
         return view('resource.json');
+    }
+
+    public function search(Request $request)
+    {
+        $name = $request->input('name');
+
+        $resources = Resource::where('name', 'like', "%$name%")->orderBy('name')->paginate(15);
+
+        return view('resource.search', ['resources' => $resources]);
     }
 
     /**
@@ -112,7 +121,8 @@ class ResourceController extends Controller
         //
     }
 
-    function save(Resource $resource, Request $request){
+    function save(Resource $resource, Request $request)
+    {
         $input = $request->all();
 
         $resource->name = $input['name'];
@@ -128,7 +138,8 @@ class ResourceController extends Controller
         $resource->save();
     }
 
-    public function saveFor($item, Resource $resource, Request $request) {
+    public function saveFor($item, Resource $resource, Request $request)
+    {
         $input = $request->all();
 
         $resource->name = $input['name'];

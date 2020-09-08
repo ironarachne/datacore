@@ -25,11 +25,9 @@ class Resource extends Model
 
     public static function withTag($tag)
     {
-        $resources = Resource::whereHas('tags', function (Builder $query) use ($tag) {
+        return Resource::whereHas('tags', function (Builder $query) use ($tag) {
             $query->where('name', '=', $tag);
-        })->get();
-
-        return $resources;
+        });
     }
 
     public function tags()

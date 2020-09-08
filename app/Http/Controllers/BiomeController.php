@@ -18,7 +18,7 @@ class BiomeController extends Controller
      */
     public function index()
     {
-        $biomes = Biome::all();
+        $biomes = Biome::orderBy('name')->paginate(15);
 
         return view('biome.index', ['biomes' => $biomes]);
     }
@@ -173,8 +173,12 @@ class BiomeController extends Controller
 
             $biome->save();
 
-            if (sizeof($object->fauna_tags) > 0) {
-                $tags = implode(',', $object->fauna_tags);
+            if (sizeof($object->tags) > 0) {
+                $tagArray = [];
+                foreach ($object->tags as $tag) {
+                    $tagArray [] = $tag->name;
+                }
+                $tags = implode(',', $tagArray);
                 update_tags($biome, $tags);
             }
 

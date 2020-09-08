@@ -26,6 +26,8 @@
                         </li>
                     @endforeach
                 </ul>
+
+                {{ $minerals->links() }}
             </div>
         </div>
     </div>

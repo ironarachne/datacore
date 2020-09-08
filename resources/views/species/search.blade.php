@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h1>Resources</h1>
+                <h1>Species Search</h1>
 
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
@@ -12,21 +12,10 @@
                     </div>
                 @endif
 
-                @if (!empty($tag))
-                    <p>Showing only resources with tag "{{ $tag }}".</p>
-                @endif
-
-                @if (Auth::user()->is_admin)
-                    <p>
-                        <a href="{{ route('resource.create') }}" class="btn btn-primary">Create New</a>
-                        <a href="{{ route('resource.json') }}" class="btn btn-info">Create from JSON</a>
-                    </p>
-                @endif
-
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Search</h2>
-                        <form method="POST" action="{{ route('resource.search') }}">
+                        <form method="POST" action="{{ route('species.search') }}">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Name to search for</label>
@@ -37,17 +26,26 @@
                     </div>
                 </div>
 
-                <h2>List of Resources</h2>
+                <h2>Search Results</h2>
 
-                <ul>
-                    @foreach ($resources as $resource)
-                        <li>
-                            <a href="{{ route('resource.show', ['resource'=>$resource->id]) }}">{{ $resource->name }}</a>
-                        </li>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Tags</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($species as $spe)
+                        <tr>
+                            <td><a href="{{ route('species.show', ['species'=>$spe->id]) }}">{{ $spe->name }}</a></td>
+                            <td>{{ convert_tags_to_string($spe) }}</td>
+                        </tr>
                     @endforeach
-                </ul>
+                    </tbody>
+                </table>
 
-                {{ $resources->links() }}
+                {{ $species->links() }}
             </div>
         </div>
     </div>

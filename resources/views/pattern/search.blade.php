@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h1>Resources</h1>
+                <h1>Pattern Search</h1>
 
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
@@ -12,21 +12,10 @@
                     </div>
                 @endif
 
-                @if (!empty($tag))
-                    <p>Showing only resources with tag "{{ $tag }}".</p>
-                @endif
-
-                @if (Auth::user()->is_admin)
-                    <p>
-                        <a href="{{ route('resource.create') }}" class="btn btn-primary">Create New</a>
-                        <a href="{{ route('resource.json') }}" class="btn btn-info">Create from JSON</a>
-                    </p>
-                @endif
-
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Search</h2>
-                        <form method="POST" action="{{ route('resource.search') }}">
+                        <form method="POST" action="{{ route('pattern.search') }}">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Name to search for</label>
@@ -37,17 +26,17 @@
                     </div>
                 </div>
 
-                <h2>List of Resources</h2>
+                <h2>Search Results</h2>
 
                 <ul>
-                    @foreach ($resources as $resource)
+                    @foreach ($patterns as $pattern)
                         <li>
-                            <a href="{{ route('resource.show', ['resource'=>$resource->id]) }}">{{ $resource->name }}</a>
+                            <a href="{{ route('pattern.show', ['pattern' => $pattern->id]) }}">{{ $pattern->name }}</a>
                         </li>
                     @endforeach
                 </ul>
 
-                {{ $resources->links() }}
+                {{ $patterns->links() }}
             </div>
         </div>
     </div>

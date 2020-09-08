@@ -49508,7 +49508,7 @@ var app = new Vue({
         }
       }).then(function (response) {
         console.log(response);
-        app.message = 'Created ' + response.data.new_records_count + ' new charges from data';
+        app.message = 'Created ' + response.data.new_records_count + ' new items from data';
       });
     },
     createQuickRace: function createQuickRace() {

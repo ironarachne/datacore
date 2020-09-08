@@ -4,23 +4,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h1>Resources</h1>
+                <h1>Resource Search</h1>
 
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
                     </div>
-                @endif
-
-                @if (!empty($tag))
-                    <p>Showing only resources with tag "{{ $tag }}".</p>
-                @endif
-
-                @if (Auth::user()->is_admin)
-                    <p>
-                        <a href="{{ route('resource.create') }}" class="btn btn-primary">Create New</a>
-                        <a href="{{ route('resource.json') }}" class="btn btn-info">Create from JSON</a>
-                    </p>
                 @endif
 
                 <div class="card">
@@ -37,7 +26,7 @@
                     </div>
                 </div>
 
-                <h2>List of Resources</h2>
+                <h2>Search Results</h2>
 
                 <ul>
                     @foreach ($resources as $resource)

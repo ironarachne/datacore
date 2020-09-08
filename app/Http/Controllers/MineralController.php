@@ -19,7 +19,7 @@ class MineralController extends Controller
      */
     public function index()
     {
-        $minerals = Mineral::All();
+        $minerals = Mineral::orderBy('name')->paginate(15);
 
         return view('mineral.index', ['minerals' => $minerals]);
     }
@@ -157,7 +157,7 @@ class MineralController extends Controller
 
     public function getJSON(Request $request)
     {
-        if (! empty($request->query('tag'))) {
+        if (!empty($request->query('tag'))) {
             $tag = Tag::where('name', '=', $request->query('tag'))->first();
             if (empty($tag)) {
                 return response('{"minerals": []}')->header('Content-Type', 'application/json');
@@ -167,7 +167,7 @@ class MineralController extends Controller
             $minerals = Mineral::with(['tags', 'resources.tags'])->get()->toJSON();
         }
 
-        $minerals = '{"minerals":'.$minerals.'}';
+        $minerals = '{"minerals":' . $minerals . '}';
 
         return response($minerals)->header('Content-Type', 'application/json');
     }
@@ -193,7 +193,7 @@ class MineralController extends Controller
 
             $mineral->save();
 
-            if (! empty($object->resources)) {
+            if (!empty($object->resources)) {
                 foreach ($object->resources as $r) {
                     $resource = new Resource;
                     $resource->name = $r->name;
@@ -203,13 +203,21 @@ class MineralController extends Controller
                     $resource->commonality = $r->commonality;
                     $resource->value = $r->value;
                     $mineral->resources()->save($resource);
-                    $rTags = implode(',', $r->tags);
+                    $tagArray = [];
+                    foreach ($r->tags as $tag) {
+                        $tagArray [] = $tag->name;
+                    }
+                    $rTags = implode(',', $tagArray);
                     update_tags($resource, $rTags);
                 }
             }
 
             if (sizeof($object->tags) > 0) {
-                $tags = implode(',', $object->tags);
+                $tagArray = [];
+                foreach ($object->tags as $tag) {
+                    $tagArray [] = $tag->name;
+                }
+                $tags = implode(',', $tagArray);
                 update_tags($mineral, $tags);
             }
 

@@ -43,6 +43,8 @@
                     @endforeach
                     </tbody>
                 </table>
+
+                {{ $biomes->links() }}
             </div>
         </div>
     </div>

@@ -18,7 +18,7 @@ class ProfessionController extends Controller
      */
     public function index()
     {
-        $professions = Profession::orderBy('name')->get();
+        $professions = Profession::orderBy('name')->paginate(15);
 
         return view('profession.index', ['professions' => $professions]);
     }
@@ -119,7 +119,7 @@ class ProfessionController extends Controller
 
     public function getJSON(Request $request)
     {
-        if (! empty($request->query('tag'))) {
+        if (!empty($request->query('tag'))) {
             $tag = Tag::where('name', '=', $request->query('tag'))->first();
             if (empty($tag)) {
                 return response('{"professions": []}')->header('Content-Type', 'application/json');
@@ -129,7 +129,7 @@ class ProfessionController extends Controller
             $professions = Profession::with('tags')->get()->toJson();
         }
 
-        $professions = '{"professions":'.$professions.'}';
+        $professions = '{"professions":' . $professions . '}';
 
         return response($professions)->header('Content-Type', 'application/json');
     }
@@ -153,7 +153,11 @@ class ProfessionController extends Controller
             $profession->save();
 
             if (sizeof($object->tags) > 0) {
-                $tags = implode(',', $object->tags);
+                $tagArray = [];
+                foreach ($object->tags as $tag) {
+                    $tagArray [] = $tag->name;
+                }
+                $tags = implode(',', $tagArray);
                 update_tags($profession, $tags);
             }
 

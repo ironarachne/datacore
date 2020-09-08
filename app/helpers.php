@@ -2,8 +2,9 @@
 
 use App\Tag;
 
-function inches_to_feet($inches) {
-    $feetPart = floor($inches/12);
+function inches_to_feet(int $inches): string
+{
+    $feetPart = floor($inches / 12);
     $inchPart = $inches % 12;
 
     $result = "$feetPart'$inchPart\"";
@@ -11,21 +12,23 @@ function inches_to_feet($inches) {
     return $result;
 }
 
-function convert_tags_to_string($object) {
+function convert_tags_to_string($object): string
+{
     $tags = '';
     $tagData = $object->tags()->get();
 
     foreach ($tagData as $tag) {
         $tags .= $tag->name . ',';
     }
-    if (substr($tags, -1, 1) == ','){
+    if (substr($tags, -1, 1) == ',') {
         $tags = substr($tags, 0, -1);
     }
 
     return $tags;
 }
 
-function update_tags($object, $tagData) {
+function update_tags($object, string $tagData)
+{
     $tags = explode(',', $tagData);
     $tagIDs = [];
 
