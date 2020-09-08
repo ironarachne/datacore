@@ -33,6 +33,11 @@ class BiomeController extends Controller
         return view('biome.create');
     }
 
+    public function json()
+    {
+        return view('biome.json');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -126,7 +131,7 @@ class BiomeController extends Controller
 
     public function getJSON(Request $request)
     {
-        if (! empty($request->query('tag'))) {
+        if (!empty($request->query('tag'))) {
             $tag = Tag::where('name', '=', $request->query('tag'))->first();
             if (empty($tag)) {
                 return response('{"biomes": []}')->header('Content-Type', 'application/json');
@@ -136,7 +141,7 @@ class BiomeController extends Controller
             $biomes = Biome::with('tags')->get()->toJson();
         }
 
-        $biomes = '{"biomes":'.$biomes.'}';
+        $biomes = '{"biomes":' . $biomes . '}';
 
         return response($biomes)->header('Content-Type', 'application/json');
     }

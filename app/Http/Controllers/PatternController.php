@@ -37,6 +37,11 @@ class PatternController extends Controller
         return view('pattern.create', ['professions' => $professions]);
     }
 
+    public function json()
+    {
+        return view('pattern.json');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

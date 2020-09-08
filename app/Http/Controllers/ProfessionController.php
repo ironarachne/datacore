@@ -33,6 +33,11 @@ class ProfessionController extends Controller
         return view('profession.create');
     }
 
+    public function json()
+    {
+        return view('profession.json');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

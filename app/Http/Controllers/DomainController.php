@@ -32,6 +32,11 @@ class DomainController extends Controller
         return view('domain.create');
     }
 
+    public function json()
+    {
+        return view('domain.json');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

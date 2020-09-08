@@ -45,6 +45,11 @@ class SpeciesController extends Controller
         return view('species.create');
     }
 
+    public function json()
+    {
+        return view('species.json');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

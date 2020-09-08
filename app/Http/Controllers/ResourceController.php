@@ -40,6 +40,11 @@ class ResourceController extends Controller
         return view('resource.create');
     }
 
+    public function json()
+    {
+        return view('resource.json');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

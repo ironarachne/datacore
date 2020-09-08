@@ -17,7 +17,10 @@
                 @endif
 
                 @if (Auth::user()->is_admin)
-                <p><a href="{{ route('resource.create') }}" class="btn btn-primary">Create New</a></p>
+                <p>
+                    <a href="{{ route('resource.create') }}" class="btn btn-primary">Create New</a>
+                    <a href="{{ route('resource.json') }}" class="btn btn-info">Create from JSON</a>
+                </p>
                 @endif
 
                 <h2>List of Resources</h2>

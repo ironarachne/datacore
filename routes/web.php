@@ -17,13 +17,21 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function() {
     Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/biome/json', 'BiomeController@json')->name('biome.json');
     Route::resource('biome', 'BiomeController');
+    Route::get('/charge/json', 'ChargeController@json')->name('charge.json');
     Route::resource('charge', 'ChargeController');
+    Route::get('/domain/json', 'DomainController@json')->name('domain.json');
     Route::resource('domain', 'DomainController');
+    Route::get('/mineral/json', 'MineralController@json')->name('mineral.json');
     Route::resource('mineral', 'MineralController');
+    Route::get('/pattern/json', 'PatternController@json')->name('pattern.json');
     Route::resource('pattern', 'PatternController');
+    Route::get('/profession/json', 'ProfessionController@json')->name('profession.json');
     Route::resource('profession', 'ProfessionController');
+    Route::get('/resource/json', 'ResourceController@json')->name('resource.json');
     Route::resource('resource', 'ResourceController');
+    Route::get('/species/json', 'SpeciesController@json')->name('species.json');
     Route::resource('species', 'SpeciesController');
 
     // Pattern routes

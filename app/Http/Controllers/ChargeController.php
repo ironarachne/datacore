@@ -33,6 +33,11 @@ class ChargeController extends Controller
         return view('charge.create');
     }
 
+    public function json()
+    {
+        return view('charge.json');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -118,7 +123,7 @@ class ChargeController extends Controller
 
     public function getJSON(Request $request)
     {
-        if (! empty($request->query('tag'))) {
+        if (!empty($request->query('tag'))) {
             $tag = Tag::where('name', '=', $request->query('tag'))->first();
             if (empty($tag)) {
                 return response('{"charges": []}')->header('Content-Type', 'application/json');
@@ -128,7 +133,7 @@ class ChargeController extends Controller
             $charges = Charge::with('tags')->get()->toJson();
         }
 
-        $charges = '{"charges":'.$charges.'}';
+        $charges = '{"charges":' . $charges . '}';
 
         return response($charges);
     }

@@ -34,6 +34,11 @@ class MineralController extends Controller
         return view('mineral.create');
     }
 
+    public function json()
+    {
+        return view('mineral.json');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
