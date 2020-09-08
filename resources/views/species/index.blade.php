@@ -15,6 +15,7 @@
                 <p>
                     <a href="{{ route('species.create') }}" class="btn btn-primary">Create New</a>
                     <a href="{{ route('species.json') }}" class="btn btn-info">Create from JSON</a>
+                    <a href="{{ route('species.quick') }}" class="btn btn-secondary">Create Quick Race</a>
                 </p>
                 @endif
 

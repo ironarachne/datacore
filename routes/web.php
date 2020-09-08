@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/resource/json', 'ResourceController@json')->name('resource.json');
     Route::resource('resource', 'ResourceController');
     Route::get('/species/json', 'SpeciesController@json')->name('species.json');
+    Route::get('/species/quick', 'SpeciesController@quick')->name('species.quick');
     Route::resource('species', 'SpeciesController');
 
     // Pattern routes

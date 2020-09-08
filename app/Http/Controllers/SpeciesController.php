@@ -50,6 +50,11 @@ class SpeciesController extends Controller
         return view('species.json');
     }
 
+    public function quick()
+    {
+        return view('species.quick');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -95,8 +100,8 @@ class SpeciesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request  $request
-     * @param Species  $species
+     * @param Request $request
+     * @param Species $species
      *
      * @return RedirectResponse
      */
@@ -110,7 +115,7 @@ class SpeciesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Species  $species
+     * @param Species $species
      *
      * @return Response
      */
@@ -119,7 +124,8 @@ class SpeciesController extends Controller
         //
     }
 
-    public function save(Species $species, Request $request) {
+    public function save(Species $species, Request $request)
+    {
         $input = $request->all();
 
         $species->name = $input['name'];
@@ -138,7 +144,8 @@ class SpeciesController extends Controller
 
     // Shortcut functions
 
-    public function storeQuickRace(Request $request) {
+    public function storeQuickRace(Request $request)
+    {
         $species = new Species;
         $input = $request->all();
 
@@ -157,7 +164,7 @@ class SpeciesController extends Controller
 
         $species->save();
 
-        update_tags($species, $species->name.',sentient,race');
+        update_tags($species, $species->name . ',sentient,race');
 
         $infant = new AgeCategory;
         $infant->name = 'infant';
@@ -244,24 +251,28 @@ class SpeciesController extends Controller
 
     // Resource functions
 
-    public function createResource(Species $species) {
+    public function createResource(Species $species)
+    {
         return view('resource.create-for', ['item' => $species, 'itemType' => 'species']);
     }
 
-    public function editResource(Species $species, Resource $resource) {
+    public function editResource(Species $species, Resource $resource)
+    {
         $tags = convert_tags_to_string($resource);
 
         return view('resource.edit-for', ['item' => $species, 'itemType' => 'species', 'resource' => $resource, 'tags' => $tags]);
     }
 
-    public function updateResource(Species $species, Resource $resource, Request $request) {
+    public function updateResource(Species $species, Resource $resource, Request $request)
+    {
         $rc = new ResourceController();
         $rc->saveFor($species, $resource, $request);
 
         return redirect()->route('species.show', ['species' => $species]);
     }
 
-    public function storeResource(Species $species, Request $request) {
+    public function storeResource(Species $species, Request $request)
+    {
         $resource = new Resource;
 
         $rc = new ResourceController();
@@ -272,21 +283,25 @@ class SpeciesController extends Controller
 
     // Age Category functions
 
-    public function createAgeCategory(Species $species) {
+    public function createAgeCategory(Species $species)
+    {
         return view('species.age_category.create', ['species' => $species]);
     }
 
-    public function editAgeCategory(Species $species, AgeCategory $ageCategory) {
+    public function editAgeCategory(Species $species, AgeCategory $ageCategory)
+    {
         return view('species.age_category.edit', ['species' => $species, 'ageCategory' => $ageCategory]);
     }
 
-    public function updateAgeCategory(Species $species, AgeCategory $ageCategory, Request $request) {
+    public function updateAgeCategory(Species $species, AgeCategory $ageCategory, Request $request)
+    {
         $this->saveAgeCategory($species, $ageCategory, $request);
 
         return redirect()->route('species.show', ['species' => $species]);
     }
 
-    public function storeAgeCategory(Species $species, Request $request) {
+    public function storeAgeCategory(Species $species, Request $request)
+    {
         $ageCategory = new AgeCategory;
 
         $this->saveAgeCategory($species, $ageCategory, $request);
@@ -294,7 +309,8 @@ class SpeciesController extends Controller
         return redirect()->route('species.show', ['species' => $species]);
     }
 
-    public function saveAgeCategory(Species $species, AgeCategory $ageCategory, Request $request) {
+    public function saveAgeCategory(Species $species, AgeCategory $ageCategory, Request $request)
+    {
         $input = $request->all();
 
         $ageCategory->name = $input['name'];
@@ -314,23 +330,27 @@ class SpeciesController extends Controller
 
     // Trait Template functions
 
-    public function createTraitTemplate(Species $species) {
+    public function createTraitTemplate(Species $species)
+    {
         return view('species.trait_template.create', ['species' => $species]);
     }
 
-    public function editTraitTemplate(Species $species, TraitTemplate $traitTemplate) {
+    public function editTraitTemplate(Species $species, TraitTemplate $traitTemplate)
+    {
         $tags = convert_tags_to_string($traitTemplate);
 
         return view('species.trait_template.edit', ['species' => $species, 'traitTemplate' => $traitTemplate, 'tags' => $tags]);
     }
 
-    public function updateTraitTemplate(Species $species, TraitTemplate $traitTemplate, Request $request) {
+    public function updateTraitTemplate(Species $species, TraitTemplate $traitTemplate, Request $request)
+    {
         $this->saveTraitTemplate($species, $traitTemplate, $request);
 
         return redirect()->route('species.show', ['species' => $species]);
     }
 
-    public function storeTraitTemplate(Species $species, Request $request) {
+    public function storeTraitTemplate(Species $species, Request $request)
+    {
         $traitTemplate = new TraitTemplate;
 
         $this->saveTraitTemplate($species, $traitTemplate, $request);
@@ -338,7 +358,8 @@ class SpeciesController extends Controller
         return redirect()->route('species.show', ['species' => $species]);
     }
 
-    public function saveTraitTemplate(Species $species, TraitTemplate $traitTemplate, Request $request) {
+    public function saveTraitTemplate(Species $species, TraitTemplate $traitTemplate, Request $request)
+    {
         $input = $request->all();
 
         $traitTemplate->name = $input['name'];
@@ -378,7 +399,7 @@ class SpeciesController extends Controller
 
         $newRecordsCount = 0;
 
-        foreach($data->species as $object) {
+        foreach ($data->species as $object) {
             $species = new Species;
 
             $species->name = $object->name;
@@ -393,7 +414,7 @@ class SpeciesController extends Controller
             $species->save();
 
             if (!empty($object->age_categories)) {
-                foreach($object->age_categories as $ac) {
+                foreach ($object->age_categories as $ac) {
                     $ageCategory = new AgeCategory;
                     $ageCategory->name = $ac->name;
                     $ageCategory->age_min = $ac->age_min;
@@ -411,7 +432,7 @@ class SpeciesController extends Controller
             }
 
             if (!empty($object->possible_traits)) {
-                foreach($object->possible_traits as $t) {
+                foreach ($object->possible_traits as $t) {
                     $trait = new TraitTemplate;
                     $trait->name = $t->name;
                     $trait->possible_values = implode(',', $t->possible_values);
@@ -424,7 +445,7 @@ class SpeciesController extends Controller
             }
 
             if (!empty($object->common_traits)) {
-                foreach($object->common_traits as $t) {
+                foreach ($object->common_traits as $t) {
                     $trait = new TraitTemplate;
                     $trait->name = $t->name;
                     $trait->possible_values = implode(',', $t->possible_values);
@@ -437,7 +458,7 @@ class SpeciesController extends Controller
             }
 
             if (!empty($object->resources)) {
-                foreach($object->resources as $r) {
+                foreach ($object->resources as $r) {
                     $resource = new Resource;
                     $resource->name = $r->name;
                     $resource->description = $r->description;
