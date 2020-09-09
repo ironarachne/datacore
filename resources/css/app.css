@@ -1,0 +1,63 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer base {
+    label {
+        @apply mx-3 font-bold;
+    }
+    h1 {
+        @apply text-5xl;
+    }
+    h2 {
+        @apply text-4xl;
+    }
+    table {
+        @apply table-auto;
+    }
+    td, th {
+        @apply px-4 py-2;
+    }
+    td {
+        @apply border;
+    }
+    main > div {
+        @apply max-w-7xl mx-auto py-10 px-6;
+    }
+}
+
+.alert {
+    @apply bg-red-700 text-white;
+}
+
+.badge {
+    @apply bg-green-400 px-4 py-2 mx-2 rounded;
+}
+
+.btn {
+    @apply shadow border-2 border-green-500 block rounded bg-green-400 p-2 mx-2;
+}
+
+.form-control {
+    @apply border-2 p-2 mx-3;
+}
+
+.form-group {
+    @apply flex my-3 items-center;
+}
+
+.tag {
+    @apply bg-gray-300 rounded p-1 my-1 inline-block;
+}
+
+.btn:hover {
+    @apply bg-green-300;
+}
+
+.btn:active {
+    @apply bg-yellow-300;
+}
+
+.btn:focus {
+    @apply outline-none;
+}

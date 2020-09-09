@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Biome;
-use App\Charge;
-use App\Domain;
-use App\Mineral;
-use App\Pattern;
-use App\Profession;
-use App\Resource;
-use App\Species;
+use App\Models\Biome;
+use App\Models\Charge;
+use App\Models\Domain;
+use App\Models\Mineral;
+use App\Models\Pattern;
+use App\Models\Profession;
+use App\Models\Resource;
+use App\Models\Species;
 use Illuminate\Contracts\Support\Renderable;
 
 class HomeController extends Controller

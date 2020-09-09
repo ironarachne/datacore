@@ -1,6 +1,6 @@
 <?php
 
-use App\Tag;
+use App\Models\Tag;
 
 function inches_to_feet(int $inches): string
 {
@@ -20,6 +20,7 @@ function convert_tags_to_string($object): string
     foreach ($tagData as $tag) {
         $tags .= $tag->name . ',';
     }
+
     if (substr($tags, -1, 1) == ',') {
         $tags = substr($tags, 0, -1);
     }

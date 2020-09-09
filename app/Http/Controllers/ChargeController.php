@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Charge;
-use App\Tag;
+use App\Models\Charge;
+use App\Models\Tag;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

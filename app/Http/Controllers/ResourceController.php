@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mineral;
-use App\Resource;
-use App\Tag;
+use App\Models\Resource;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -91,7 +89,9 @@ class ResourceController extends Controller
      */
     public function edit(Resource $resource)
     {
-        return view('resource.edit', ['resource' => $resource]);
+        $tags = convert_tags_to_string($resource);
+
+        return view('resource.edit', ['resource' => $resource, 'tags' => $tags]);
     }
 
     /**

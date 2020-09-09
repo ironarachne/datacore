@@ -1,52 +1,46 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Species Search
+        </h2>
+    </x-slot>
 
-@section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h1>Species Search</h1>
-
-                @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title">Search</h2>
-                        <form method="POST" action="{{ route('species.search') }}">
-                            @csrf
-                            <div class="form-group">
-                                <label for="name">Name to search for</label>
-                                <input type="text" name="name" class="form-control">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </form>
-                    </div>
-                </div>
-
-                <h2>Search Results</h2>
-
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Tags</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($species as $spe)
-                        <tr>
-                            <td><a href="{{ route('species.show', ['species'=>$spe->id]) }}">{{ $spe->name }}</a></td>
-                            <td>{{ convert_tags_to_string($spe) }}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-
-                {{ $species->links() }}
+    <div>
+        @if (session('status'))
+            <div class="alert" role="alert">
+                {{ session('status') }}
             </div>
-        </div>
+        @endif
+
+        <form method="POST" action="{{ route('species.search') }}">
+            @csrf
+            <div class="shadow flex m-4 items-center p-3">
+                <h3 class="block mx-2 font-bold">Search</h3>
+                <input type="text" name="name" class="border-3 border-gray-600 p-2"
+                       placeholder="name to search for">
+                <button type="submit" class="btn">Search</button>
+            </div>
+        </form>
+
+        <h2>Search Results</h2>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Tags</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach ($species as $spe)
+                <tr>
+                    <td><a class="text-green-700 underline hover:no-underline" href="{{ route('species.show', ['species'=>$spe->id]) }}">{{ $spe->name }}</a></td>
+                    <td>@foreach($spe->tags as $tag)<span class="tag">{{ $tag->name }}</span> @endforeach</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+
+        {{ $species->links() }}
     </div>
-@endsection
+</x-app-layout>

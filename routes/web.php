@@ -15,28 +15,29 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::redirect('/', '/dashboard');
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', 'HomeController@index')->name('home');
-    Route::get('/biome/json', 'BiomeController@json')->name('biome.json');
+    Route::get('biome/json', 'BiomeController@json')->name('biome.json');
     Route::resource('biome', 'BiomeController');
-    Route::get('/charge/json', 'ChargeController@json')->name('charge.json');
-    Route::post('/charge/search', 'ChargeController@search')->name('charge.search');
+    Route::get('charge/json', 'ChargeController@json')->name('charge.json');
+    Route::post('charge/search', 'ChargeController@search')->name('charge.search');
     Route::resource('charge', 'ChargeController');
-    Route::get('/domain/json', 'DomainController@json')->name('domain.json');
+    Route::get('domain/json', 'DomainController@json')->name('domain.json');
     Route::resource('domain', 'DomainController');
-    Route::get('/mineral/json', 'MineralController@json')->name('mineral.json');
+    Route::get('mineral/json', 'MineralController@json')->name('mineral.json');
     Route::resource('mineral', 'MineralController');
-    Route::get('/pattern/json', 'PatternController@json')->name('pattern.json');
-    Route::post('/pattern/search', 'PatternController@search')->name('pattern.search');
+    Route::get('pattern/json', 'PatternController@json')->name('pattern.json');
+    Route::post('pattern/search', 'PatternController@search')->name('pattern.search');
     Route::resource('pattern', 'PatternController');
-    Route::get('/profession/json', 'ProfessionController@json')->name('profession.json');
+    Route::get('profession/json', 'ProfessionController@json')->name('profession.json');
     Route::resource('profession', 'ProfessionController');
-    Route::get('/resource/json', 'ResourceController@json')->name('resource.json');
-    Route::post('/resource/search', 'ResourceController@search')->name('resource.search');
+    Route::get('resource/json', 'ResourceController@json')->name('resource.json');
+    Route::post('resource/search', 'ResourceController@search')->name('resource.search');
     Route::resource('resource', 'ResourceController');
-    Route::get('/species/json', 'SpeciesController@json')->name('species.json');
-    Route::get('/species/quick', 'SpeciesController@quick')->name('species.quick');
-    Route::post('/species/search', 'SpeciesController@search')->name('species.search');
+    Route::get('species/json', 'SpeciesController@json')->name('species.json');
+    Route::get('species/quick', 'SpeciesController@quick')->name('species.quick');
+    Route::post('species/search', 'SpeciesController@search')->name('species.search');
     Route::resource('species', 'SpeciesController');
 
     // Pattern routes
@@ -69,3 +70,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('mineral/{mineral}/resource', 'MineralController@storeResource')->name('mineral.store_resource');
     Route::put('mineral/{mineral}/resource/{resource}', 'MineralController@updateResource')->name('mineral.update_resource');
 });
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', 'HomeController@index')->name('dashboard');

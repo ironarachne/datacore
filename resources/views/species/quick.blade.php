@@ -1,33 +1,26 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Create Quick Race
+        </h2>
+    </x-slot>
 
-@section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h1>Create Quick Race</h1>
-
-                @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
-                <div class="card">
-                    <div class="card-body">
-                        <p>@{{ message }}</p>
-
-                        <div class="form-group">
-                            <input type="text" id="quick-species" class="form-control" placeholder="species name"
-                                   v-model="quickSpecies">
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-danger" id="create-quick-race" v-on:click="createQuickRace">Create
-                                Race
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div id="app">
+        <div class="form-group">
+            <label for="quick-species">Species Name</label>
+            <input type="text" id="quick-species" name="quick-species" class="form-control" placeholder="species name"
+                   v-model="quickSpecies">
+            <button class="btn" id="create-quick-race" v-on:click="createQuickRace">Create
+                Race
+            </button>
         </div>
+
+        <p>@{{ message }}</p>
+
+        @if (Auth::user())
+            <input type="hidden" ref="apiToken" value="{{ Auth::user()->api_token }}">
+        @endif
     </div>
-@endsection
+
+    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+</x-app-layout>

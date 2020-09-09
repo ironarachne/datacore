@@ -1,25 +1,22 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Resource "{{ $resource->name }}"
+        </h2>
+    </x-slot>
 
-@section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h1>{{ $resource->name }}</h1>
+    <div>
+        <p>{{ $resource->description }}</p>
+        <p><strong>Main Material:</strong> {{ $resource->main_material }}</p>
+        <p><strong>Origin:</strong> {{ $resource->origin }}</p>
+        <p><strong>Commonality:</strong> {{ $resource->commonality }}</p>
+        <p><strong>Value:</strong> {{ $resource->value }}</p>
 
-                <p>{{ $resource->description }}</p>
-                <p><strong>Main Material:</strong> {{ $resource->main_material }}</p>
-                <p><strong>Origin:</strong> {{ $resource->origin }}</p>
-                <p><strong>Commonality:</strong> {{ $resource->commonality }}</p>
-                <p><strong>Value:</strong> {{ $resource->value }}</p>
+        <p><strong>Tags:</strong> @foreach($resource->tags as $tag)<span class="tag">{{$tag->name}}</span> @endforeach</p>
 
-                <p><strong>Tags:</strong> @foreach($resource->tags as $tag){{$tag->name}}@if (!$loop->last)
-                        , @endif @endforeach</p>
-
-                @if (Auth::user()->is_admin)
-                <p><a href="{{ route('resource.edit', ['resource'=>$resource]) }}"
-                      class="btn btn-primary">Edit</a></p>
-                @endif
-            </div>
-        </div>
+        @if (Auth::user()->is_admin)
+            <p><a href="{{ route('resource.edit', ['resource'=>$resource]) }}"
+                  class="btn">Edit</a></p>
+        @endif
     </div>
-@endsection
+</x-app-layout>

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\AgeCategory;
-use App\Resource;
-use App\Species;
-use App\Tag;
-use App\TraitTemplate;
+use App\Models\AgeCategory;
+use App\Models\Resource;
+use App\Models\Species;
+use App\Models\Tag;
+use App\Models\TraitTemplate;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

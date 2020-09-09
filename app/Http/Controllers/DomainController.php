@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain;
+use App\Models\Domain;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

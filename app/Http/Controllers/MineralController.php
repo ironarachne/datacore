@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Mineral;
-use App\Resource;
-use App\Tag;
+use App\Models\Mineral;
+use App\Models\Resource;
+use App\Models\Tag;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

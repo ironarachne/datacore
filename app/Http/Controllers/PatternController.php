@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Pattern;
-use App\PatternSlot;
-use App\Profession;
-use App\Tag;
+use App\Models\Pattern;
+use App\Models\PatternSlot;
+use App\Models\Profession;
+use App\Models\Tag;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,7 +32,7 @@ class PatternController extends Controller
      */
     public function create()
     {
-        $professions = Profession::All();
+        $professions = Profession::orderBy('name')->get();
 
         return view('pattern.create', ['professions' => $professions]);
     }
@@ -88,7 +88,7 @@ class PatternController extends Controller
      */
     public function edit(Pattern $pattern)
     {
-        $professions = Profession::All();
+        $professions = Profession::orderBy('name')->get();
 
         $tags = convert_tags_to_string($pattern);
 
