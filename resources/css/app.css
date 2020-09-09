@@ -22,7 +22,7 @@
         @apply border;
     }
     main > div {
-        @apply max-w-7xl mx-auto py-10 px-6;
+        @apply mx-auto py-10 px-6;
     }
 }
 
