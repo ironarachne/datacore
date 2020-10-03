@@ -20,7 +20,37 @@
             <p class="flex">
                 <a href="{{ route('resource.create') }}" class="btn">Create New</a>
                 <a href="{{ route('resource.json') }}" class="btn">Create from JSON</a>
+                <!--UI to show the Delete button-->
+                <button onclick="document.getElementById('id01').style.display='block'">Modal</button>
             </p>
+               <!--On the biome index page, added a "Delete" button next to each biome's tag list-->
+             <div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+  <form class="modal-content" action="{{$biome->name}}" method="post">
+  @csrf
+  @method('DELETE')
+    <div class="container">
+   <h1> <button type="submit" name="Delete" class="btn btn-danger"  onclick="document.getElementById('id01').style.display='block'">Delete</button></h1>
+      <p>Are you sure you want to delete your account?</p>
+    
+      <div class="clearfix">
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
+      </div>
+    </div>
+  </form>
+</div>
+                             
+                             <script>
+                             // Get the modal
+                             var modal = document.getElementById('id01');
+                             // When the user clicks anywhere outside of the modal, close it
+                                window.onclick = function(event) {
+                                    if (event.target == modal) {
+                                        modal.style.display = "none";
+                                                         }
+                                            }
+                                </script>
         @endif
 
         <form method="POST" action="{{ route('resource.search') }}">
