@@ -39,6 +39,7 @@
                 <th>Mask Image</th>
                 <th>Lines Image</th>
                 <th>Tags</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -54,6 +55,11 @@
                             src="https://static.ironarachne.com/images/heraldry/sources/charges/{{ $charge->identifier }}-lines.png"
                             class="w-20 h-20"></td>
                     <td>@foreach($charge->tags as $tag) <span class="tag">{{ $tag->name }}</span> @endforeach</td>
+                     <form id="delete-form{{$charge->id}}" action="{{url('/charge')}}/{{$charge->id}}" method="post">
+                        {{csrf_field() }}
+                        {{ method_field('DELETE') }}   
+                        <i  onclick="return deletecharge({{$charge->id}});" class="fa fa-trash-o" style="cursor: pointer;"></i>
+                    </form>
                 </tr>
             @endforeach
             </tbody>
@@ -61,4 +67,13 @@
 
         {{ $charges->links() }}
     </div>
+    <script type="text/javascript">
+            var deletecharge = function(id){
+                    if (confirm('Are you sure you want to delete this?')) {
+                event.preventDefault();
+                document.getElementById('delete-form'+id).submit(); 
+                }           
+        }
+    </script>
+
 </x-app-layout>

@@ -113,7 +113,11 @@ class ChargeController extends Controller
      */
     public function destroy(Charge $charge)
     {
-        //
+        $tags = convert_tags_to_string($charge);
+
+        $this->delete($tags);
+
+        return redirect()->route('charge.index');
     }
 
     function save(Charge $charge, Request $request)
