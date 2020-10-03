@@ -104,7 +104,9 @@ class BiomeController extends Controller
      */
     public function destroy(Biome $biome)
     {
-        //
+       $b= Biome::find($biome);
+         $b->delete();
+       return redirect()->to('biome.index')->with('success','Biome deleted successfully');
     }
 
     function save(Biome $biome, Request $request)

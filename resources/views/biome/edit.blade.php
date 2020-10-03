@@ -78,5 +78,11 @@
             </div>
             <button type="submit" class="btn">Save</button>
         </form>
+        <!--Added the DELETE button to  delete the  biomes in the UI-->
+         <form class="float-right ml-2" action="{{ $biome->id }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                             <button type="submit" name="Delete" class="btn btn-danger">Delete</button>
+                             </form>
     </div>
 </x-app-layout>
