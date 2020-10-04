@@ -39,13 +39,14 @@ class ChargeController extends Controller
     }
 
     <!--Add ability to search charge by tag, not just name #18->
+        
      public function searchByTag(Request $request)
         {
         $tags = $request->input('tag');
 
         $charges = Charge::where('tag', 'like', "%$tag%")->orderBy('tag')->paginate(15);
-
-        return view('charge.serch', ['charges' => $charges]);
+//This will check the serch methos in folder 'charge' under file 'charge.searchByTag'.
+        return view('charge.searchByTag', ['charges' => $charges]);
     }
     public function search(Request $request)
     {
